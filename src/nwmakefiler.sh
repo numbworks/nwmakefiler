@@ -295,3 +295,86 @@ update-codecoverage:
 	if [ \$\$? -eq 0 ]; then echo "[OK] \$@: coverage badge updated successfully!"; else echo "[ERROR] \$@: failed to update coverage badge."; fi;
 EOF
 }
+
+# MENU
+declare -A options_s1=(
+    ["1mn"]="MODULE_NAME"
+    ["1mv"]="MODULE_VERSION"
+    ["1ct"]="COVERAGE_THRESHOLD"
+)
+declare -A options_s2=(
+
+)
+declare -A options_s3=(
+
+)
+
+show_menu() {
+    echo "---- NWMAKEFILER ----"
+    echo
+
+    echo "SECTION1 (SETTINGS)"
+    echo
+    for key in "${!options_s1[@]}"; do
+        echo "  - [$key] ${options_s1[$key]}"
+    done
+    echo
+
+    echo "SECTION2 (TARGETS)"
+    echo
+    for key in "${!options_s2[@]}"; do
+        echo "  - [$key] ${options_s2[$key]}"
+    done
+    echo
+
+    echo "SECTION3 (UTILITIES)"
+    echo
+    for key in "${!options_s3[@]}"; do
+        echo "  - [$key] ${options_s3[$key]}"
+    done
+    echo
+
+    echo "COMMANDS"
+    echo
+    echo "  - [exit] Exit"
+    echo
+    echo "---------------------"
+    echo
+    echo
+}
+handle_input() {
+    local input="$1"
+    case "$input" in
+        
+        1mn)
+            add_to_function_names_s1 "create_section1_module_name"
+            unset options_s1["1mn"]
+            ;;
+        1mv)
+            add_to_function_names_s1 "create_section1_module_version"
+            unset options_s1["1mv"]
+            ;;
+        1ct)
+            add_to_function_names_s1 "create_section1_coverage_threshold"
+            unset options_s1["1ct"]
+            ;;
+
+        exit)
+            echo "Exiting..."
+            exit 0
+            ;;
+        *)
+            echo "Error: invalid input!"
+            echo
+            ;;
+    esac
+}
+
+# MAIN
+clear
+while true; do
+    show_menu
+    read -p "ENTER OPTION: " user_input
+    handle_input "$user_input"
+    echo
+done
