@@ -50,7 +50,7 @@ show_function_names_all() {
 }
 eval_function_names_all() {
     for function_name in "${function_names_all[@]}"; do
-        output="$($function_name)"
+        output=$(eval "$function_name")
         content+="$output"$'\n'
     done
 }
@@ -347,15 +347,22 @@ handle_input() {
     case "$input" in
         
         1mn)
-            add_to_function_names_s1 "create_section1_module_name"
+            read -p "ENTER MODULE_NAME: " module_name
+            add_to_function_names_s1 "create_section1_module_name \"$module_name\""
             unset options_s1["1mn"]
             ;;
         1mv)
-            add_to_function_names_s1 "create_section1_module_version"
-            unset options_s1["1mv"]
+            read -p "ENTER MODULE_VERSION: " module_version
+            if validate_module_version "$module_version"; then
+                add_to_function_names_s1 "create_section1_module_version \"$module_version\""
+                unset options_s1["1mv"]
+            else
+                echo "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)"
+            fi
             ;;
         1ct)
-            add_to_function_names_s1 "create_section1_coverage_threshold"
+            read -p "ENTER COVERAGE_THRESHOLD: " coverage_threshold
+            add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
             unset options_s1["1ct"]
             ;;
 
