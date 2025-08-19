@@ -319,14 +319,14 @@ declare -A options_s2=(
 declare -A options_s3=(
 
 )
-declare -a errors=()
+declare -a log_messages=()
 
-show_last_5_errors() {
-    local count=${#errors[@]}
+show_last_five_log_messages() {
+    local count=${#log_messages[@]}
     local start=$(( count > 5 ? count - 5 : 0 ))
     
     for ((i = start; i < count; i++)); do
-        echo "  $((i + 1)). ${errors[i]}"
+        echo "  $((i + 1)). ${log_messages[i]}"
     done
 }
 show_menu() {
@@ -361,9 +361,9 @@ show_menu() {
     echo "  - [exit] Exit"
     echo
 
-    echo "LAST 5 ERRORS"
+    echo "LAST FIVE LOG MESSAGES"
     echo
-    show_last_5_errors
+    show_last_five_log_messages
     echo
 
     echo "============================="
@@ -371,8 +371,8 @@ show_menu() {
     echo
 
 }
-add_to_errors() {
-    errors+=("$1")
+add_to_log_messages() {
+    log_messages+=("$1")
 }
 handle_1mn() {
     read -p "ENTER MODULE_NAME: " module_name
@@ -380,8 +380,9 @@ handle_1mn() {
     if validate_module_name "$module_name"; then
         add_to_function_names_s1 "create_section1_module_name \"$module_name\""
         unset options_s1["1mn"]
+        add_to_log_messages "${FUNCNAME[0]}: success! MODULE_NAME: '$module_name'."
     else
-        add_to_errors "INVALID MODULE_NAME: '$module_name'. It cannot be empty."
+        add_to_log_messages "${FUNCNAME[0]}: failure! MODULE_NAME ('$module_name') can't be empty."
     fi
 }
 handle_1mv() {
@@ -390,8 +391,9 @@ handle_1mv() {
     if validate_module_version "$module_version"; then
         add_to_function_names_s1 "create_section1_module_version \"$module_version\""
         unset options_s1["1mv"]
+        add_to_log_messages "${FUNCNAME[0]}: success! MODULE_VERSION: '$module_version'."
     else
-        add_to_errors "INVALID MODULE_VERSION: '$module_version'. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
+        add_to_log_messages "${FUNCNAME[0]}: failure! MODULE_VERSION ('$module_version') must adopt the MAJOR.MINOR.PATCH format (e.g., 1.0.0)."
     fi
 }
 handle_1ct() {
@@ -400,8 +402,9 @@ handle_1ct() {
     if validate_coverage_threshold "$coverage_threshold"; then           
         add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
         unset options_s1["1ct"]
+        add_to_log_messages "${FUNCNAME[0]}: success! COVERAGE_THRESHOLD: $coverage_threshold."
     else
-        add_to_errors "INVALID COVERAGE_THRESHOLD: $coverage_threshold. Expected: integer in the [0-100] range."
+        add_to_log_messages "${FUNCNAME[0]}: failure! COVERAGE_THRESHOLD ($coverage_threshold) must be an integer in the [0-100] range."
     fi
 }
 
