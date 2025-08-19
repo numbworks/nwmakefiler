@@ -29,6 +29,18 @@ assert_in_list() {
 
     echo "Failed"
 }
+assert_list_count() {
+    local expected_count="$1"
+    shift
+    local list=("$@")
+    local actual_count="${#list[@]}"
+
+    if [[ "$actual_count" -eq "$expected_count" ]]; then
+        echo "Passed"
+    else
+        echo "Failed (expected: $expected_count, actual: $actual_count)."
+    fi
+}
 
 # TESTS
 test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument() {
@@ -73,6 +85,7 @@ test_addtofunctionnamess1_shouldcontainexpecteditem_wheninvoked() {
 
     # Assert
     assert_in_list $function_name "${function_names_s1[@]}"
+    assert_list_count 1 "${function_names_s1[@]}"
 }
 test_addtofunctionnamess2_shouldcontainexpecteditem_wheninvoked() {
     echo "${FUNCNAME[0]}"
@@ -86,6 +99,7 @@ test_addtofunctionnamess2_shouldcontainexpecteditem_wheninvoked() {
 
     # Assert
     assert_in_list $function_name "${function_names_s2[@]}"
+    assert_list_count 1 "${function_names_s2[@]}"
 }
 test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked() {
     echo "${FUNCNAME[0]}"
@@ -99,6 +113,37 @@ test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked() {
 
     # Assert
     assert_in_list $function_name "${function_names_s3[@]}"
+    assert_list_count 1 "${function_names_s3[@]}"
+}
+test_createfunctionnamesall_shouldcontainexpecteditems_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    function_names_s1=("fn1")
+    function_names_s2=("fn2")
+    function_names_s3=("fn3")
+    function_names_all=()
+
+    # Act
+    create_function_names_all
+
+    # Assert
+    assert_in_list "fn1" "${function_names_all[@]}"
+    assert_in_list "fn2" "${function_names_all[@]}"
+    assert_in_list "fn3" "${function_names_all[@]}"
+    assert_list_count 3 "${function_names_all[@]}"
+}
+test_resetfunctionnamesall_shouldremoveallitems_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    function_names_all=("fn1" "fn2")
+
+    # Act
+    reset_function_names_all
+
+    # Assert
+    assert_list_count 0 "${function_names_all[@]}"
 }
 
 # TEST NAMES
@@ -110,6 +155,8 @@ declare -a test_names=(
     "test_addtofunctionnamess1_shouldcontainexpecteditem_wheninvoked"
     "test_addtofunctionnamess2_shouldcontainexpecteditem_wheninvoked"
     "test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked"
+    "test_createfunctionnamesall_shouldcontainexpecteditems_wheninvoked"
+    "test_resetfunctionnamesall_shouldremoveallitems_wheninvoked"
 )
 
 # MAIN
