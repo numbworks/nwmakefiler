@@ -475,7 +475,31 @@ handle_2uni() {
     unset options_s2["2uni"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
-
+handle_3cal() {
+    add_to_function_names_s3 "create_section3_calculate_commitavg"
+    unset options_s3["3cal"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_3cls() {
+    add_to_function_names_s3 "create_section3_create_classdiagram"
+    unset options_s3["3cls"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_3pyv() {
+    add_to_function_names_s3 "create_section3_check_pythonversion"
+    unset options_s3["3pyv"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_3req() {
+    add_to_function_names_s3 "create_section3_check_requirements"
+    unset options_s3["3req"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_3upd() {
+    add_to_function_names_s3 "create_section3_update_codecoverage"
+    unset options_s3["3upd"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_wrong_input() {
     add_to_log_messages "${FUNCNAME[0]}: failure! Invalid input or no corresponding action available ('$1')."
 }
@@ -496,6 +520,12 @@ handle_input() {
         2try) handle_2try ;;
         2typ) handle_2typ ;;
         2uni) handle_2uni ;;
+
+        3cal) handle_3cal ;;
+        3cls) handle_3cls ;;
+        3pyv) handle_3pyv ;;
+        3req) handle_3req ;;
+        3upd) handle_3upd ;;
 
         exit) exit 0;;
 
