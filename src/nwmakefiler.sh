@@ -7,9 +7,6 @@ content=""
 create_section1_name() {
 	echo "# SETTINGS" 
 }
-create_section1_phony() {
-	echo ".PHONY: " 
-}
 create_section1_shell() {
 	echo "SHELL := /bin/bash" 
 }
@@ -382,10 +379,15 @@ show_menu_header() {
 show_menu_options_s1() {
     echo "SECTION1 (SETTINGS)"
     echo
+
     options_s1_keys=("1mn" "1mv" "1ct")
+    
     for key in "${options_s1_keys[@]}"; do
-        echo "  - [$key] ${options_s1[$key]}"
+        if [[ -v options_s1[$key] ]]; then
+            echo "  - [$key] ${options_s1[$key]}"
+        fi
     done
+
     echo
 }
 show_menu_options_s2() {
@@ -418,6 +420,7 @@ show_menu_log_messages() {
 show_menu_commands() {
     echo "COMMANDS"
     echo
+    echo "  - [save] Save"
     echo "  - [exit] Exit"
     echo
 }
