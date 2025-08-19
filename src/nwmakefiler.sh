@@ -306,7 +306,15 @@ declare -A options_s1=(
     ["1ct"]="COVERAGE_THRESHOLD"
 )
 declare -A options_s2=(
-
+    ["2cha"]="changelog-concise"
+    ["2cod"]="codemetrics-concise/verbose"
+    ["2com"]="compile-concise/verbose"
+	["2cov"]="coverage-concise/verbose"
+	["2doc"]="docstrings-concise/verbose"
+	["2set"]="setup-concise"
+	["2try"]="tryinstall-concise/verbose"
+	["2typ"]="type-concise/verbose"
+	["2uni"]="unittest-concise/verbose"
 )
 declare -A options_s3=(
 
