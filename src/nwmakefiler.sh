@@ -331,15 +331,16 @@ show_menu_header() {
     echo "============================="
     echo
 }
-show_options_s1() {
+show_menu_options_s1() {
     echo "SECTION1 (SETTINGS)"
     echo
-    for key in "${!options_s1[@]}"; do
+    options_s1_keys=("1mn" "1mv" "1ct")
+    for key in "${options_s1_keys[@]}"; do
         echo "  - [$key] ${options_s1[$key]}"
     done
     echo
 }
-show_options_s2() {
+show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
     for key in $(printf "%s\n" "${!options_s2[@]}" | sort); do
@@ -347,7 +348,7 @@ show_options_s2() {
     done
     echo
 }
-show_options_s3() {
+show_menu_options_s3() {
     echo "SECTION3 (UTILITIES)"
     echo
     for key in $(printf "%s\n" "${!options_s3[@]}" | sort); do
@@ -355,7 +356,7 @@ show_options_s3() {
     done
     echo
 }
-show_last_five_log_messages() {
+show_menu_log_messages() {
     local count=${#log_messages[@]}
     local start=$(( count > 5 ? count - 5 : 0 ))
 
@@ -366,7 +367,7 @@ show_last_five_log_messages() {
     done
     echo
 }
-show_commands() {
+show_menu_commands() {
     echo "COMMANDS"
     echo
     echo "  - [exit] Exit"
@@ -379,11 +380,11 @@ show_menu_footer() {
 }
 show_menu() {
     show_menu_header
-    show_options_s1
-    show_options_s2
-    show_options_s3
-    show_commands
-    show_last_five_log_messages   
+    show_menu_options_s1
+    show_menu_options_s2
+    show_menu_options_s3
+    show_menu_commands
+    show_menu_log_messages   
     show_menu_footer
 }
 add_to_log_messages() {
