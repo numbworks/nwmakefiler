@@ -3,67 +3,6 @@
 # CONTENT
 content=""
 
-# VALIDATORS
-validate_module_name() {
-    [[ -n "$1" ]]
-}
-validate_module_version() {
-    if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-validate_coverage_threshold() {
-    if ! [[ "$1" =~ ^[0-9]+$ ]]; then
-        return 1
-    fi
-
-    if (( $1 < 0 || $1 > 100 )); then
-        return 1
-    fi
-
-    return 0
-}
-
-# FUNCTION NAMES
-declare -a function_names_s1=()
-declare -a function_names_s2=()
-declare -a function_names_s3=()
-declare -a function_names_all=()
-
-add_to_function_names_s1() {
-    function_names_s1+=("$1")
-}
-add_to_function_names_s2() {
-    function_names_s2+=("$1")
-}
-add_to_function_names_s3() {
-    function_names_s3+=("$1")
-}
-create_function_names_all() {
-    function_names_all+=("${function_names_s1[@]}")
-    function_names_all+=("${function_names_s2[@]}")
-    function_names_all+=("${function_names_s3[@]}")
-}
-show_function_names_all() {
-    for function_name in "${function_names_all[@]}"; do
-        echo "$function_name"
-    done
-}
-eval_function_names_all() {
-    for function_name in "${function_names_all[@]}"; do
-        output=$(eval "$function_name")
-        content+="$output"$'\n'
-    done
-}
-reset_function_names_all() {
-    function_names_all=()
-}
-reset_content() {
-    content=""
-}
-
 # FUNCTIONS FOR SECTION 1
 create_section1_name() {
 	echo "# SETTINGS" 
@@ -88,6 +27,9 @@ create_section1_coverage_threshold() {
 }
 
 # FUNCTIONS FOR SECTION 2
+create_section2_name() {
+	echo "# TARGETS" 
+}
 create_section2_clear() {
     cat <<EOF
 clear:
@@ -244,6 +186,9 @@ EOF
 }
 
 # FUNCTIONS FOR SECTION 3
+create_section3_name() {
+	echo "# UTILITIES" 
+}
 create_section3_calculate_commitavg() {
     cat <<EOF
 calculate-commitavg:
@@ -299,6 +244,75 @@ update-codecoverage:
 EOF
 }
 
+# FUNCTIONS FOR SECTION 4
+create_section4_name() {
+	echo "# AGGREGATES" 
+}
+
+# VALIDATORS
+validate_module_name() {
+    [[ -n "$1" ]]
+}
+validate_module_version() {
+    if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+validate_coverage_threshold() {
+    if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+        return 1
+    fi
+
+    if (( $1 < 0 || $1 > 100 )); then
+        return 1
+    fi
+
+    return 0
+}
+
+# FUNCTION NAMES
+declare -a function_names_s1=()
+declare -a function_names_s2=()
+declare -a function_names_s3=()
+declare -a function_names_all=()
+
+add_to_function_names_s1() {
+    function_names_s1+=("$1")
+}
+add_to_function_names_s2() {
+    function_names_s2+=("$1")
+}
+add_to_function_names_s3() {
+    function_names_s3+=("$1")
+}
+add_to_function_names_all() {
+    function_names_all+=("$1")
+}
+add_array_to_function_names_all() {
+    local array_name="$1"
+    local -n arr_ref="$array_name"
+    function_names_all+=( "${arr_ref[@]}" )
+}
+show_function_names_all() {
+    for function_name in "${function_names_all[@]}"; do
+        echo "$function_name"
+    done
+}
+eval_function_names_all() {
+    for function_name in "${function_names_all[@]}"; do
+        output=$(eval "$function_name")
+        content+="$output"$'\n'
+    done
+}
+reset_function_names_all() {
+    function_names_all=()
+}
+reset_content() {
+    content=""
+}
+
 # MENU
 declare -A options_s1=(
     ["1mn"]="MODULE_NAME"
@@ -325,6 +339,40 @@ declare -A options_s3=(
 )
 declare -a log_messages=()
 
+add_to_log_messages() {
+    log_messages+=("$1")
+}
+create_target_list() {
+    local prefix="$1"       # ".PHONY" or "all-concise"
+    local array_name="$2"
+    local -n input_array="$array_name"
+    local targets=()
+
+    for fn in "${input_array[@]}"; do
+        # Skip if ends in "verbose"
+        if [[ "$fn" == *verbose ]]; then
+            continue
+        fi
+
+        # Strip "create_section2_" or "create_section3_"
+        local target="${fn#create_section2_}"
+        target="${target#create_section3_}"
+
+        # Replace underscores with hyphens
+        target="${target//_/-}"
+
+        targets+=("$target")
+    done
+
+    # If prefix is .PHONY, add "all-concise" to the end
+    if [[ "$prefix" == ".PHONY" ]]; then
+        targets+=("all-concise")
+    fi
+
+    # Join the target names into a single string
+    local target_line="$prefix: ${targets[*]}"
+    echo "$target_line"
+}
 show_menu_header() {
     echo "============================="
     echo "         NWMAKEFILER         "
@@ -386,9 +434,6 @@ show_menu() {
     show_menu_commands
     show_menu_log_messages   
     show_menu_footer
-}
-add_to_log_messages() {
-    log_messages+=("$1")
 }
 handle_1mn() {
     read -p "ENTER MODULE_NAME: " module_name
@@ -500,6 +545,32 @@ handle_3upd() {
     unset options_s3["3upd"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_save() {
+
+    content+=$(create_section1_name)
+    content+=$(create_target_list ".PHONY" function_names_s2)
+    content+=$(create_section1_shell)
+    content+=$(create_section1_root_dir)
+    content+=$(create_section1_module_name)
+    content+=$(create_section1_module_version)
+    content+=$(create_section1_coverage_threshold)
+    content+=$'\n\n'
+
+    content+=$(create_section2_name)
+    eval_function_names_all function_names_s2
+    content+=$'\n\n'
+
+    content+=$(create_section3_name)
+    eval_function_names_all function_names_s3
+    content+=$'\n\n'
+
+    content+=$(create_section4_name)
+    content+=$(create_target_list "all-concise" function_names_s2)
+    content+=$'\n'
+
+    echo $content
+
+}
 handle_wrong_input() {
     add_to_log_messages "${FUNCNAME[0]}: failure! Invalid input or no corresponding action available ('$1')."
 }
@@ -527,6 +598,7 @@ handle_input() {
         3req) handle_3req ;;
         3upd) handle_3upd ;;
 
+        save) handle_save; exit 0 ;;
         exit) exit 0;;
 
         *) handle_wrong_input $1 ;;
