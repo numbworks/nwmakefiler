@@ -1,6 +1,29 @@
 #!/bin/bash
 
+# Content
 content=""
+
+# Validators
+validate_module_version() {
+    if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+validate_coverage_threshold() {
+    if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+        return 1
+    fi
+
+    if (( $1 < 0 || $1 > 100 )); then
+        return 1
+    fi
+
+    return 0
+}
+
+# Function Names
 declare -a function_names_s1=()
 declare -a function_names_s2=()
 declare -a function_names_s3=()
