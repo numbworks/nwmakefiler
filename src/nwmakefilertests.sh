@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Helpers
+# HELPERS
 assert_success() {
     if "$@"; then
         echo "Passed: $*"
@@ -16,7 +16,7 @@ assert_failure() {
     fi
 }
 
-# Tests
+# TESTS
 test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument() {
     echo "${FUNCNAME[0]}"
 
@@ -48,7 +48,7 @@ test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument() 
     assert_failure validate_coverage_threshold ""
 }
 
-# Test Names
+# TEST NAMES
 declare -a test_names=(
     "test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument"
     "test_validatemoduleversion_shouldreturnexpectedexitcode_wheninvalidgument"
@@ -56,7 +56,7 @@ declare -a test_names=(
     "test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument"
 )
 
-# Main
+# MAIN
 source ./nwmakefiler.sh
 
 for test_name in "${test_names[@]}"; do
