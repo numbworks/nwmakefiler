@@ -321,6 +321,14 @@ declare -A options_s3=(
 )
 declare -a errors=()
 
+show_last_5_errors() {
+    local count=${#errors[@]}
+    local start=$(( count > 5 ? count - 5 : 0 ))
+    
+    for ((i = start; i < count; i++)); do
+        echo "  $((i + 1)). ${errors[i]}"
+    done
+}
 show_menu() {
     echo "============================="
     echo "         NWMAKEFILER         "
@@ -353,11 +361,9 @@ show_menu() {
     echo "  - [exit] Exit"
     echo
 
-    echo "ERRORS"
+    echo "LAST 5 ERRORS"
     echo
-    for error in "${!errors[@]}"; do
-        echo "  - '$error'"
-    done
+    show_last_5_errors
     echo
 
     echo "============================="
@@ -375,17 +381,17 @@ handle_1mn() {
         add_to_function_names_s1 "create_section1_module_name \"$module_name\""
         unset options_s1["1mn"]
     else
-        add_to_errors "INVALID MODULE_NAME. It cannot be empty."
+        add_to_errors "INVALID MODULE_NAME: '$module_name'. It cannot be empty."
     fi
 }
-handle_1mn() {
+handle_1mv() {
     read -p "ENTER MODULE_VERSION: " module_version
 
     if validate_module_version "$module_version"; then
         add_to_function_names_s1 "create_section1_module_version \"$module_version\""
         unset options_s1["1mv"]
     else
-        add_to_errors "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
+        add_to_errors "INVALID MODULE_VERSION: '$module_version'. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
     fi
 }
 handle_1ct() {
@@ -395,7 +401,7 @@ handle_1ct() {
         add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
         unset options_s1["1ct"]
     else
-        add_to_errors "INVALID COVERAGE_THRESHOLD. Expected range: [0-100]."
+        add_to_errors "INVALID COVERAGE_THRESHOLD: $coverage_threshold. Expected: integer in the [0-100] range."
     fi
 }
 
@@ -405,7 +411,7 @@ handle_input() {
     case "$input" in
         
         1mn) handle_1mn ;;
-        1mv) handle_1mn ;;
+        1mv) handle_1mv ;;
         1ct) handle_1ct ;;
 
         exit)
