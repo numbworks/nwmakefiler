@@ -317,7 +317,11 @@ declare -A options_s2=(
 	["2uni"]="unittest-concise/verbose"
 )
 declare -A options_s3=(
-
+    ["3cal"]="calculate-commitavg"
+    ["3cls"]="create-classdiagram"
+    ["3pyv"]="check-pythonversion"
+	["3req"]="check-requirements"
+	["3upd"]="update-codecoverage"
 )
 declare -a log_messages=()
 
@@ -407,24 +411,30 @@ handle_1ct() {
         add_to_log_messages "${FUNCNAME[0]}: failure! COVERAGE_THRESHOLD ($coverage_threshold) must be an integer in the [0-100] range."
     fi
 }
+handle_2cha() {
+    add_to_function_names_s2 "create_section2_changelog_concise"
+    unset options_s2["2cha"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_wrong_input() {
+    add_to_log_messages "${FUNCNAME[0]}: failure! Invalid input or no corresponding action available ('$1')."
+}
+
 
 
 handle_input() {
-    local input="$1"
-    case "$input" in
+
+    case "$1" in
         
         1mn) handle_1mn ;;
         1mv) handle_1mv ;;
         1ct) handle_1ct ;;
 
-        exit)
-            echo "Exiting..."
-            exit 0
-            ;;
-        *)
-            echo "Error: invalid input!"
-            echo
-            ;;
+        2cha) handle_2cha ;;
+
+        exit) exit 0;;
+
+        *) handle_wrong_input $1 ;;
     esac
 }
 
