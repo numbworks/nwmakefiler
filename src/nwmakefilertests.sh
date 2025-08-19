@@ -41,6 +41,16 @@ assert_list_count() {
         echo "Failed (expected: $expected_count, actual: $actual_count)."
     fi
 }
+assert_strings_equal() {
+    local expected="$1"
+    local actual="$2"
+
+    if [[ "$actual" == "$expected" ]]; then
+        echo "Passed"
+    else
+        echo "Failed (expected: $expected, actual: $actual)."
+    fi
+}
 
 # TESTS
 test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument() {
@@ -145,6 +155,93 @@ test_resetfunctionnamesall_shouldremoveallitems_wheninvoked() {
     # Assert
     assert_list_count 0 "${function_names_all[@]}"
 }
+test_createsection1name_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    expected="# SETTINGS"
+
+    # Act
+    actual=$(create_section1_name)
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1phony_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    expected=".PHONY: "
+
+    # Act
+    actual=$(create_section1_phony)
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1shell_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    expected="SHELL := /bin/bash"
+
+    # Act
+    actual=$(create_section1_shell)
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1rootdir_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    expected='ROOT_DIR := $(shell cd .. && pwd)'
+
+    # Act
+    actual=$(create_section1_root_dir)
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1modulename_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    module_name="nwsomething"
+    expected='MODULE_NAME = "nwsomething"'
+
+    # Act
+    actual=$(create_section1_module_name "$module_name")
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1moduleversion_shouldreturnexpectedstring_wheninvoked() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    version="2.1.0"
+    expected='MODULE_VERSION = "2.1.0"'
+
+    # Act
+    actual=$(create_section1_module_version "$version")
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
+test_createsection1coveragethreshold_shouldreturnexpectedstring_whenvalidargument() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    threshold=70
+    expected="COVERAGE_THRESHOLD = 70"
+
+    # Act
+    actual=$(create_section1_coverage_threshold "$threshold")
+
+    # Assert
+    assert_strings_equal "$expected" "$actual"
+}
 
 # TEST NAMES
 declare -a test_names=(
@@ -157,6 +254,13 @@ declare -a test_names=(
     "test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked"
     "test_createfunctionnamesall_shouldcontainexpecteditems_wheninvoked"
     "test_resetfunctionnamesall_shouldremoveallitems_wheninvoked"
+    "test_createsection1name_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1phony_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1shell_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1rootdir_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1modulename_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1moduleversion_shouldreturnexpectedstring_wheninvoked"
+    "test_createsection1coveragethreshold_shouldreturnexpectedstring_whenvalidargument"
 )
 
 # MAIN

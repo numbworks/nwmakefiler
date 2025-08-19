@@ -60,3 +60,26 @@ reset_function_names_all() {
 reset_content() {
     content=""
 }
+
+# FUNCTIONS FOR SECTION 1
+create_section1_name() {
+	echo "# SETTINGS" 
+}
+create_section1_phony() {
+	echo ".PHONY: " 
+}
+create_section1_shell() {
+	echo "SHELL := /bin/bash" 
+}
+create_section1_root_dir() {
+	echo "ROOT_DIR := \$(shell cd .. && pwd)" 
+}
+create_section1_module_name() { 
+	echo "MODULE_NAME = \"$1\""; 
+}
+create_section1_module_version() { 
+	echo "MODULE_VERSION = \"$1\""; 
+}
+create_section1_coverage_threshold() {
+    echo "COVERAGE_THRESHOLD = $1"
+}
