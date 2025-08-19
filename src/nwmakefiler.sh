@@ -319,9 +319,12 @@ declare -A options_s2=(
 declare -A options_s3=(
 
 )
+declare -a errors=()
 
 show_menu() {
-    echo "---- NWMAKEFILER ----"
+    echo "============================="
+    echo "         NWMAKEFILER         "
+    echo "============================="
     echo
 
     echo "SECTION1 (SETTINGS)"
@@ -349,9 +352,21 @@ show_menu() {
     echo
     echo "  - [exit] Exit"
     echo
-    echo "---------------------"
+
+    echo "ERRORS"
+    echo
+    for error in "${!errors[@]}"; do
+        echo "  - '$error'"
+    done
+    echo
+
+    echo "============================="
     echo
     echo
+
+}
+add_to_errors() {
+    errors+=("$1")
 }
 handle_1mn() {
     read -p "ENTER MODULE_NAME: " module_name
@@ -360,7 +375,7 @@ handle_1mn() {
         add_to_function_names_s1 "create_section1_module_name \"$module_name\""
         unset options_s1["1mn"]
     else
-        echo "INVALID MODULE_NAME. It cannot be empty."
+        add_to_errors "INVALID MODULE_NAME. It cannot be empty."
     fi
 }
 handle_1mn() {
@@ -370,7 +385,7 @@ handle_1mn() {
         add_to_function_names_s1 "create_section1_module_version \"$module_version\""
         unset options_s1["1mv"]
     else
-        echo "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
+        add_to_errors "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
     fi
 }
 handle_1ct() {
@@ -380,7 +395,7 @@ handle_1ct() {
         add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
         unset options_s1["1ct"]
     else
-        echo "INVALID COVERAGE_THRESHOLD. Expected range: [0-100]."
+        add_to_errors "INVALID COVERAGE_THRESHOLD. Expected range: [0-100]."
     fi
 }
 
@@ -405,8 +420,8 @@ handle_input() {
 }
 
 # MAIN
-clear
 while true; do
+    clear
     show_menu
     read -p "ENTER OPTION: " user_input
     handle_input "$user_input"
