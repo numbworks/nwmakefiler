@@ -325,6 +325,11 @@ declare -A options_s3=(
 )
 declare -a log_messages=()
 
+show_options_s2() {
+    for key in $(printf "%s\n" "${!options_s2[@]}" | sort); do
+        echo "  - [$key] ${options_s2[$key]}"
+    done
+}
 show_last_five_log_messages() {
     local count=${#log_messages[@]}
     local start=$(( count > 5 ? count - 5 : 0 ))
@@ -416,12 +421,57 @@ handle_2cha() {
     unset options_s2["2cha"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2cod() {
+    add_to_function_names_s2 "create_section2_codemetrics_concise"
+    add_to_function_names_s2 "create_section2_codemetrics_verbose"
+    unset options_s2["2cod"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2com() {
+    add_to_function_names_s2 "create_section2_compile_concise"
+    add_to_function_names_s2 "create_section2_compile_verbose"
+    unset options_s2["2com"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2cov() {
+    add_to_function_names_s2 "create_section2_coverage_concise"
+    add_to_function_names_s2 "create_section2_coverage_verbose"
+    unset options_s2["2cov"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2doc() {
+    add_to_function_names_s2 "create_section2_docstrings_concise"
+    add_to_function_names_s2 "create_section2_docstrings_verbose"
+    unset options_s2["2doc"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2set() {
+    add_to_function_names_s2 "create_section2_setup_concise"
+    unset options_s2["2set"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2try() {
+    add_to_function_names_s2 "create_section2_tryinstall_concise"
+    add_to_function_names_s2 "create_section2_tryinstall_verbose"
+    unset options_s2["2try"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2typ() {
+    add_to_function_names_s2 "create_section2_type_concise"
+    add_to_function_names_s2 "create_section2_type_verbose"
+    unset options_s2["2typ"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+handle_2uni() {
+    add_to_function_names_s2 "create_section2_unittest_concise"
+    add_to_function_names_s2 "create_section2_unittest_verbose"
+    unset options_s2["2uni"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
+
 handle_wrong_input() {
     add_to_log_messages "${FUNCNAME[0]}: failure! Invalid input or no corresponding action available ('$1')."
 }
-
-
-
 handle_input() {
 
     case "$1" in
@@ -431,6 +481,14 @@ handle_input() {
         1ct) handle_1ct ;;
 
         2cha) handle_2cha ;;
+        2cod) handle_2cod ;;
+        2com) handle_2com ;;
+        2cov) handle_2cov ;;
+        2doc) handle_2doc ;;
+        2set) handle_2set ;;
+        2try) handle_2try ;;
+        2typ) handle_2typ ;;
+        2uni) handle_2uni ;;
 
         exit) exit 0;;
 
