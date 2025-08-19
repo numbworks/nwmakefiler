@@ -48,14 +48,18 @@ test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument() 
     assert_failure validate_coverage_threshold ""
 }
 
+# Test Names
+declare -a test_names=(
+    "test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument"
+    "test_validatemoduleversion_shouldreturnexpectedexitcode_wheninvalidgument"
+    "test_validatecoveragethreshold_shouldreturnexpectedexitcode_whenvalidgument"
+    "test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument"
+)
+
 # Main
 source ./nwmakefiler.sh
 
-clear
-test_validatemoduleversion_shouldreturnexpectedexitcode_whenvalidgument
-echo
-test_validatemoduleversion_shouldreturnexpectedexitcode_wheninvalidgument
-echo
-test_validatecoveragethreshold_shouldreturnexpectedexitcode_whenvalidgument
-echo
-test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument
+for test_name in "${test_names[@]}"; do
+    eval "$test_name"
+    echo
+done
