@@ -4,6 +4,9 @@
 content=""
 
 # VALIDATORS
+validate_module_name() {
+    [[ -n "$1" ]]
+}
 validate_module_version() {
     if [[ "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
         return 0
@@ -342,29 +345,45 @@ show_menu() {
     echo
     echo
 }
+handle_1mn() {
+    read -p "ENTER MODULE_NAME: " module_name
+    
+    if validate_module_name "$module_name"; then
+        add_to_function_names_s1 "create_section1_module_name \"$module_name\""
+        unset options_s1["1mn"]
+    else
+        echo "INVALID MODULE_NAME. It cannot be empty."
+    fi
+}
+handle_1mn() {
+    read -p "ENTER MODULE_VERSION: " module_version
+
+    if validate_module_version "$module_version"; then
+        add_to_function_names_s1 "create_section1_module_version \"$module_version\""
+        unset options_s1["1mv"]
+    else
+        echo "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)."
+    fi
+}
+handle_1ct() {
+    read -p "ENTER COVERAGE_THRESHOLD: " coverage_threshold
+
+    if validate_coverage_threshold "$coverage_threshold"; then           
+        add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
+        unset options_s1["1ct"]
+    else
+        echo "INVALID COVERAGE_THRESHOLD. Expected range: [0-100]."
+    fi
+}
+
+
 handle_input() {
     local input="$1"
     case "$input" in
         
-        1mn)
-            read -p "ENTER MODULE_NAME: " module_name
-            add_to_function_names_s1 "create_section1_module_name \"$module_name\""
-            unset options_s1["1mn"]
-            ;;
-        1mv)
-            read -p "ENTER MODULE_VERSION: " module_version
-            if validate_module_version "$module_version"; then
-                add_to_function_names_s1 "create_section1_module_version \"$module_version\""
-                unset options_s1["1mv"]
-            else
-                echo "INVALID MODULE_VERSION. Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)"
-            fi
-            ;;
-        1ct)
-            read -p "ENTER COVERAGE_THRESHOLD: " coverage_threshold
-            add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
-            unset options_s1["1ct"]
-            ;;
+        1mn) handle_1mn ;;
+        1mv) handle_1mn ;;
+        1ct) handle_1ct ;;
 
         exit)
             echo "Exiting..."
