@@ -647,10 +647,11 @@ handle_input() {
 }
 
 # MAIN
-while true; do
-    clear
-    show_menu
-    read -p "ENTER OPTION: " user_input
-    handle_input "$user_input"
-    echo
-done
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    while true; do
+        clear
+        show_menu
+        read -p "ENTER OPTION: " user_input
+        handle_input "$user_input"
+        echo
+    done

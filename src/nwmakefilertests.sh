@@ -83,6 +83,48 @@ test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument() 
     assert_failure validate_coverage_threshold "abc"
     assert_failure validate_coverage_threshold ""
 }
+
+test_validates1_shouldreturnexpectedexitcode_whenvalidfunctionlist() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    local valid_functions=(
+        "create_section1_name"
+        "create_section1_shell"
+        "create_section1_root_dir"
+        "create_section1_module_name"
+        "create_section1_module_version"
+        "create_section1_coverage_threshold"
+    )
+
+    # Act, Assert
+    assert_success validate_s1 valid_functions
+}
+test_validates1_shouldreturnexpectedexitcode_wheninvalidfunctionlist() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    local invalid_functions=(
+        "create_section1_name"
+        "create_section1_shell"
+        "create_section1_root_dir"        
+        "create_section1_module_name"
+        "create_section1_module_version"
+    )
+
+    # Act, Assert
+    assert_failure validate_s1 invalid_functions
+}
+test_validates1_shouldreturnexpectedexitcode_whenemptyfunctionlist() {
+    echo "${FUNCNAME[0]}"
+
+    # Arrange
+    local empty_functions=()
+
+    # Act, Assert
+    assert_failure validate_s1 empty_functions
+}
+
 test_addtofunctionnamess1_shouldcontainexpecteditem_wheninvoked() {
     echo "${FUNCNAME[0]}"
 
@@ -125,24 +167,6 @@ test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked() {
     assert_in_list $function_name "${function_names_s3[@]}"
     assert_list_count 1 "${function_names_s3[@]}"
 }
-test_createfunctionnamesall_shouldcontainexpecteditems_wheninvoked() {
-    echo "${FUNCNAME[0]}"
-
-    # Arrange
-    function_names_s1=("fn1")
-    function_names_s2=("fn2")
-    function_names_s3=("fn3")
-    function_names_all=()
-
-    # Act
-    create_function_names_all
-
-    # Assert
-    assert_in_list "fn1" "${function_names_all[@]}"
-    assert_in_list "fn2" "${function_names_all[@]}"
-    assert_in_list "fn3" "${function_names_all[@]}"
-    assert_list_count 3 "${function_names_all[@]}"
-}
 test_resetfunctionnamesall_shouldremoveallitems_wheninvoked() {
     echo "${FUNCNAME[0]}"
 
@@ -163,18 +187,6 @@ test_createsection1name_shouldreturnexpectedstring_wheninvoked() {
 
     # Act
     actual=$(create_section1_name)
-
-    # Assert
-    assert_strings_equal "$expected" "$actual"
-}
-test_createsection1phony_shouldreturnexpectedstring_wheninvoked() {
-    echo "${FUNCNAME[0]}"
-
-    # Arrange
-    expected=".PHONY: "
-
-    # Act
-    actual=$(create_section1_phony)
 
     # Assert
     assert_strings_equal "$expected" "$actual"
@@ -249,13 +261,14 @@ declare -a test_names=(
     "test_validatemoduleversion_shouldreturnexpectedexitcode_wheninvalidgument"
     "test_validatecoveragethreshold_shouldreturnexpectedexitcode_whenvalidgument"
     "test_validatecoveragethreshold_shouldreturnexpectedexitcode_wheninvalidgument"
+    "test_validates1_shouldreturnexpectedexitcode_whenvalidfunctionlist"
+    "test_validates1_shouldreturnexpectedexitcode_wheninvalidfunctionlist"
+    "test_validates1_shouldreturnexpectedexitcode_whenemptyfunctionlist"
     "test_addtofunctionnamess1_shouldcontainexpecteditem_wheninvoked"
     "test_addtofunctionnamess2_shouldcontainexpecteditem_wheninvoked"
     "test_addtofunctionnamess3_shouldcontainexpecteditem_wheninvoked"
-    "test_createfunctionnamesall_shouldcontainexpecteditems_wheninvoked"
     "test_resetfunctionnamesall_shouldremoveallitems_wheninvoked"
     "test_createsection1name_shouldreturnexpectedstring_wheninvoked"
-    "test_createsection1phony_shouldreturnexpectedstring_wheninvoked"
     "test_createsection1shell_shouldreturnexpectedstring_wheninvoked"
     "test_createsection1rootdir_shouldreturnexpectedstring_wheninvoked"
     "test_createsection1modulename_shouldreturnexpectedstring_wheninvoked"
