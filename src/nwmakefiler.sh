@@ -615,70 +615,67 @@ handle_3all() {
 }
 handle_save() {
 
-    if validate_s1 function_names_s1; then
-
-        local content=""
-
-        content+=$(create_section1_name)
-        content+=$'\n'
-
-        if contains_at_least_one_concise function_names_s2; then
-
-            content+=$(create_target_list ".PHONY" function_names_s2)
-            content+=$'\n'
-        
-        fi
-        
-        content+=$(create_section1_shell)
-        content+=$'\n'
-        content+=$(create_section1_root_dir)
-        content+=$'\n'
-        content+=$(eval_function_names function_names_s1)
-        content+=$'\n\n'
-
-        content+=$(create_section2_name)
-        content+=$'\n'
-
-        if [[ ${#function_names_s2[@]} -gt 0 ]]; then
-
-            content+=$(create_section2_clear)
-            content+=$'\n'
-            content+=$(create_section2_makefile_info)
-            content+=$'\n'        
-            content+=$(eval_function_names function_names_s2)
-            content+=$'\n\n'
-
-        fi
-
-        content+=$(create_section3_name)
-        content+=$'\n'
-
-        if [[ ${#function_names_s3[@]} -gt 0 ]]; then
-
-            content+=$(eval_function_names function_names_s3)
-            content+=$'\n\n'
-
-        fi
-
-        content+=$(create_section4_name)
-        content+=$'\n'
-
-        if contains_at_least_one_concise function_names_s2; then
-            
-            content+=$(create_target_list "all-concise" function_names_s2)
-
-        fi
-
-        script_dir="$(get_current_folder_path)"
-        echo "$content" > "$script_dir/makefile"
-
-        exit 0
-
-    else
+    if ! validate_s1 function_names_s1; then
 
         add_to_log_messages "${FUNCNAME[0]}: failure! In order to save(), all 'Section 1' information must be provided."
+        return 1
+    fi
+
+    local content=""
+    content+=$(create_section1_name)
+    content+=$'\n'
+
+    if contains_at_least_one_concise function_names_s2; then
+
+        content+=$(create_target_list ".PHONY" function_names_s2)
+        content+=$'\n'
+    
+    fi
+    
+    content+=$(create_section1_shell)
+    content+=$'\n'
+    content+=$(create_section1_root_dir)
+    content+=$'\n'
+    content+=$(eval_function_names function_names_s1)
+    content+=$'\n\n'
+
+    content+=$(create_section2_name)
+    content+=$'\n'
+
+    if [[ ${#function_names_s2[@]} -gt 0 ]]; then
+
+        content+=$(create_section2_clear)
+        content+=$'\n'
+        content+=$(create_section2_makefile_info)
+        content+=$'\n'        
+        content+=$(eval_function_names function_names_s2)
+        content+=$'\n\n'
 
     fi
+
+    content+=$(create_section3_name)
+    content+=$'\n'
+
+    if [[ ${#function_names_s3[@]} -gt 0 ]]; then
+
+        content+=$(eval_function_names function_names_s3)
+        content+=$'\n\n'
+
+    fi
+
+    content+=$(create_section4_name)
+    content+=$'\n'
+
+    if contains_at_least_one_concise function_names_s2; then
+        
+        content+=$(create_target_list "all-concise" function_names_s2)
+
+    fi
+
+    script_dir="$(get_current_folder_path)"
+    echo "$content" > "$script_dir/makefile"
+
+    exit 0
 
 }
 handle_wrong_input() {
