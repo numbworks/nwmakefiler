@@ -348,6 +348,7 @@ declare -A options_s2=(
 	["2try"]="tryinstall-concise/verbose"
 	["2typ"]="type-concise/verbose"
 	["2uni"]="unittest-concise/verbose"
+    ["2all"]="all the above"
 )
 declare -A options_s3=(
     ["3cal"]="calculate-commitavg"
@@ -426,9 +427,15 @@ show_menu_options_s1() {
 show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
-    for key in $(printf "%s\n" "${!options_s2[@]}" | sort); do
-        echo "  - [$key] ${options_s2[$key]}"
+
+    options_s2_keys=("2cha" "2cod" "2com" "2cov" "2doc" "2set" "2try" "2typ" "2uni" "2all")
+    
+    for key in "${options_s2_keys[@]}"; do
+        if [[ -v options_s2[$key] ]]; then
+            echo "  - [$key] ${options_s2[$key]}"
+        fi
     done
+
     echo
 }
 show_menu_options_s3() {
@@ -556,6 +563,19 @@ handle_2uni() {
     unset options_s2["2uni"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2all() {
+    handle_2cha
+    handle_2cod
+    handle_2com
+    handle_2cov
+    handle_2doc
+    handle_2set
+    handle_2try
+    handle_2typ
+    handle_2uni
+    unset options_s2["2all"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_3cal() {
     add_to_function_names_s3 "create_section3_calculate_commitavg"
     unset options_s3["3cal"]
@@ -596,7 +616,7 @@ handle_save() {
         content+=$(create_section1_root_dir)
         content+=$'\n'
         content+=$(eval_function_names function_names_s1)
-        content+=$'\n'
+        content+=$'\n\n'
 
         content+=$(create_section2_name)
         content+=$'\n'
@@ -605,17 +625,16 @@ handle_save() {
         content+=$(create_section2_makefile_info)
         content+=$'\n'        
         content+=$(eval_function_names function_names_s2)
-        content+=$'\n'
+        content+=$'\n\n'
 
         content+=$(create_section3_name)
         content+=$'\n'
         content+=$(eval_function_names function_names_s3)
-        content+=$'\n'
+        content+=$'\n\n'
 
         content+=$(create_section4_name)
-        content+=$'\n\n'
+        content+=$'\n'
         content+=$(create_target_list "all-concise" function_names_s2)
-        content+=$'\n\n'
 
         script_dir="$(get_current_folder_path)"
         echo "$content" > "$script_dir/makefile"
@@ -649,6 +668,7 @@ handle_input() {
         2try) handle_2try ;;
         2typ) handle_2typ ;;
         2uni) handle_2uni ;;
+        2all) handle_2all ;;
 
         3cal) handle_3cal ;;
         3cls) handle_3cls ;;
