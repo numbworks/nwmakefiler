@@ -613,70 +613,88 @@ handle_3all() {
     unset options_s3["3all"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_save_for_s1() {
+    local -n content_ref="$1"
+
+    content_ref+=$(create_section1_name)
+    content_ref+=$'\n'
+
+    if contains_at_least_one_concise function_names_s2; then
+	
+        content_ref+=$(create_target_list ".PHONY" function_names_s2)
+        content_ref+=$'\n'
+		
+    fi
+
+    content_ref+=$(create_section1_shell)
+    content_ref+=$'\n'
+    content_ref+=$(create_section1_root_dir)
+    content_ref+=$'\n'
+    content_ref+=$(eval_function_names function_names_s1)
+    content_ref+=$'\n\n'
+}
+handle_save_for_s2() {
+    local -n content_ref="$1"
+
+    content_ref+=$(create_section2_name)
+    content_ref+=$'\n'
+
+    if [[ ${#function_names_s2[@]} -gt 0 ]]; then
+	
+        content_ref+=$(create_section2_clear)
+        content_ref+=$'\n'
+        content_ref+=$(create_section2_makefile_info)
+        content_ref+=$'\n'
+        content_ref+=$(eval_function_names function_names_s2)
+        content_ref+=$'\n\n'
+		
+    fi
+}
+handle_save_for_s3() {
+    local -n content_ref="$1"
+
+    content_ref+=$(create_section3_name)
+    content_ref+=$'\n'
+
+    if [[ ${#function_names_s3[@]} -gt 0 ]]; then
+	
+        content_ref+=$(eval_function_names function_names_s3)
+        content_ref+=$'\n\n'
+		
+    fi
+}
+handle_save_for_s4() {
+    local -n content_ref="$1"
+
+    content_ref+=$(create_section4_name)
+    content_ref+=$'\n'
+
+    if contains_at_least_one_concise function_names_s2; then
+	
+        content_ref+=$(create_target_list "all-concise" function_names_s2)
+		
+    fi
+}
 handle_save() {
 
     if ! validate_s1 function_names_s1; then
 
         add_to_log_messages "${FUNCNAME[0]}: failure! In order to save(), all 'Section 1' information must be provided."
         return 1
+    
     fi
 
     local content=""
-    content+=$(create_section1_name)
-    content+=$'\n'
 
-    if contains_at_least_one_concise function_names_s2; then
-
-        content+=$(create_target_list ".PHONY" function_names_s2)
-        content+=$'\n'
-    
-    fi
-    
-    content+=$(create_section1_shell)
-    content+=$'\n'
-    content+=$(create_section1_root_dir)
-    content+=$'\n'
-    content+=$(eval_function_names function_names_s1)
-    content+=$'\n\n'
-
-    content+=$(create_section2_name)
-    content+=$'\n'
-
-    if [[ ${#function_names_s2[@]} -gt 0 ]]; then
-
-        content+=$(create_section2_clear)
-        content+=$'\n'
-        content+=$(create_section2_makefile_info)
-        content+=$'\n'        
-        content+=$(eval_function_names function_names_s2)
-        content+=$'\n\n'
-
-    fi
-
-    content+=$(create_section3_name)
-    content+=$'\n'
-
-    if [[ ${#function_names_s3[@]} -gt 0 ]]; then
-
-        content+=$(eval_function_names function_names_s3)
-        content+=$'\n\n'
-
-    fi
-
-    content+=$(create_section4_name)
-    content+=$'\n'
-
-    if contains_at_least_one_concise function_names_s2; then
-        
-        content+=$(create_target_list "all-concise" function_names_s2)
-
-    fi
+    handle_save_for_s1 content
+    handle_save_for_s2 content
+    handle_save_for_s3 content
+    handle_save_for_s4 content
 
     script_dir="$(get_current_folder_path)"
     echo "$content" > "$script_dir/makefile"
 
     exit 0
-
 }
 handle_wrong_input() {
     add_to_log_messages "${FUNCNAME[0]}: failure! Invalid input or no corresponding action available ('$1')."
