@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# CONTENT
-content=""
-
 # FUNCTIONS FOR SECTION 1
 create_section1_name() {
 	echo "# SETTINGS" 
@@ -316,11 +313,17 @@ add_array_to_function_names_all() {
     local -n arr_ref="$array_name"
     function_names_all+=( "${arr_ref[@]}" )
 }
-eval_function_names_all() {
-    for function_name in "${function_names_all[@]}"; do
+eval_function_names() {
+    local array_name="$1"
+    local -n fn_array="$array_name"
+
+    local content=""
+    for function_name in "${fn_array[@]}"; do
         output=$(eval "$function_name")
         content+="$output"$'\n'
     done
+
+    echo "$content"
 }
 reset_function_names_all() {
     function_names_all=()
@@ -580,31 +583,39 @@ handle_3upd() {
 }
 handle_save() {
 
-    show_array function_names_s1
-    sleep 10
-
     if validate_s1 function_names_s1; then
 
+        local content=""
+
         content+=$(create_section1_name)
+        content+=$'\n'
         content+=$(create_target_list ".PHONY" function_names_s2)
+        content+=$'\n'
         content+=$(create_section1_shell)
+        content+=$'\n'
         content+=$(create_section1_root_dir)
-        content+=$(create_section1_module_name)
-        content+=$(create_section1_module_version)
-        content+=$(create_section1_coverage_threshold)
-        content+=$'\n\n'
+        content+=$'\n'
+        content+=$(eval_function_names function_names_s1)
+        content+=$'\n'
 
         content+=$(create_section2_name)
-        eval_function_names_all function_names_s2
-        content+=$'\n\n'
+        content+=$'\n'
+        content+=$(create_section2_clear)
+        content+=$'\n'
+        content+=$(create_section2_makefile_info)
+        content+=$'\n'        
+        content+=$(eval_function_names function_names_s2)
+        content+=$'\n'
 
         content+=$(create_section3_name)
-        eval_function_names_all function_names_s3
-        content+=$'\n\n'
+        content+=$'\n'
+        content+=$(eval_function_names function_names_s3)
+        content+=$'\n'
 
         content+=$(create_section4_name)
+        content+=$'\n\n'
         content+=$(create_target_list "all-concise" function_names_s2)
-        content+=$'\n'
+        content+=$'\n\n'
 
         script_dir="$(get_current_folder_path)"
         echo "$content" > "$script_dir/makefile"
