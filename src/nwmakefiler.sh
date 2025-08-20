@@ -622,7 +622,7 @@ handle_save() {
         content+=$(create_section1_name)
         content+=$'\n'
 
-        if contains_at_least_one_concise function_names_s2 && contains_at_least_one_concise function_names_s3; then
+        if contains_at_least_one_concise function_names_s2; then
 
             content+=$(create_target_list ".PHONY" function_names_s2)
             content+=$'\n'
@@ -663,7 +663,7 @@ handle_save() {
         content+=$(create_section4_name)
         content+=$'\n'
 
-        if contains_at_least_one_concise function_names_s2 && contains_at_least_one_concise function_names_s3; then
+        if contains_at_least_one_concise function_names_s2; then
             
             content+=$(create_target_list "all-concise" function_names_s2)
 
