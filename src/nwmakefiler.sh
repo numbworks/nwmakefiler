@@ -280,7 +280,7 @@ validate_s1() {
     for item in "${required[@]}"; do
         local found=false
         for func in "${arr[@]}"; do
-            if [[ "$func" == "$item" ]]; then
+            if [[ "$func" == "$item"* ]]; then
                 found=true
                 break
             fi
@@ -315,11 +315,6 @@ add_array_to_function_names_all() {
     local array_name="$1"
     local -n arr_ref="$array_name"
     function_names_all+=( "${arr_ref[@]}" )
-}
-show_function_names_all() {
-    for function_name in "${function_names_all[@]}"; do
-        echo "$function_name"
-    done
 }
 eval_function_names_all() {
     for function_name in "${function_names_all[@]}"; do
@@ -396,6 +391,14 @@ create_target_list() {
 }
 get_current_folder_path() {
     echo "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+}
+show_array() {
+    local array_name="$1"
+    local -n arr="$array_name"
+
+    for item in "${arr[@]}"; do
+        echo "$item"
+    done
 }
 show_menu_header() {
     echo "============================="
@@ -577,6 +580,9 @@ handle_3upd() {
 }
 handle_save() {
 
+    show_array function_names_s1
+    sleep 10
+
     if validate_s1 function_names_s1; then
 
         content+=$(create_section1_name)
@@ -655,3 +661,4 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         handle_input "$user_input"
         echo
     done
+fi
