@@ -489,7 +489,7 @@ handle_1mn() {
     read -p "ENTER MODULE_NAME: " module_name
     
     if validate_module_name "$module_name"; then
-        add_to_function_names_s1 "create_section1_module_name \"$module_name\""
+        add_to_function_names_s1 "create_section1_module_name $module_name"
         unset options_s1["1mn"]
         add_to_log_messages "${FUNCNAME[0]}: success! MODULE_NAME: '$module_name'."
     else
@@ -500,7 +500,7 @@ handle_1mv() {
     read -p "ENTER MODULE_VERSION: " module_version
 
     if validate_module_version "$module_version"; then
-        add_to_function_names_s1 "create_section1_module_version \"$module_version\""
+        add_to_function_names_s1 "create_section1_module_version $module_version"
         unset options_s1["1mv"]
         add_to_log_messages "${FUNCNAME[0]}: success! MODULE_VERSION: '$module_version'."
     else
