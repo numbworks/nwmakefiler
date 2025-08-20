@@ -268,6 +268,30 @@ validate_coverage_threshold() {
 
     return 0
 }
+validate_s1() {
+    local -n arr=$1
+
+    local required=(
+        "create_section1_module_name"
+        "create_section1_module_version"
+        "create_section1_coverage_threshold"
+    )
+
+    for item in "${required[@]}"; do
+        local found=false
+        for func in "${arr[@]}"; do
+            if [[ "$func" == "$item" ]]; then
+                found=true
+                break
+            fi
+        done
+        if [[ "$found" == false ]]; then
+            return 1
+        fi
+    done
+
+    return 0
+}
 
 # FUNCTION NAMES
 declare -a function_names_s1=()
@@ -550,28 +574,38 @@ handle_3upd() {
 }
 handle_save() {
 
-    content+=$(create_section1_name)
-    content+=$(create_target_list ".PHONY" function_names_s2)
-    content+=$(create_section1_shell)
-    content+=$(create_section1_root_dir)
-    content+=$(create_section1_module_name)
-    content+=$(create_section1_module_version)
-    content+=$(create_section1_coverage_threshold)
-    content+=$'\n\n'
+    if validate_s1 function_names_s1; then
 
-    content+=$(create_section2_name)
-    eval_function_names_all function_names_s2
-    content+=$'\n\n'
+        content+=$(create_section1_name)
+        content+=$(create_target_list ".PHONY" function_names_s2)
+        content+=$(create_section1_shell)
+        content+=$(create_section1_root_dir)
+        content+=$(create_section1_module_name)
+        content+=$(create_section1_module_version)
+        content+=$(create_section1_coverage_threshold)
+        content+=$'\n\n'
 
-    content+=$(create_section3_name)
-    eval_function_names_all function_names_s3
-    content+=$'\n\n'
+        content+=$(create_section2_name)
+        eval_function_names_all function_names_s2
+        content+=$'\n\n'
 
-    content+=$(create_section4_name)
-    content+=$(create_target_list "all-concise" function_names_s2)
-    content+=$'\n'
+        content+=$(create_section3_name)
+        eval_function_names_all function_names_s3
+        content+=$'\n\n'
 
-    echo $content
+        content+=$(create_section4_name)
+        content+=$(create_target_list "all-concise" function_names_s2)
+        content+=$'\n'
+
+        echo $content
+
+        exit 0
+
+    else
+
+        add_to_log_messages "${FUNCNAME[0]}: failure! In order to save(), all 'Section 1' information must be provided."
+
+    fi
 
 }
 handle_wrong_input() {
@@ -601,7 +635,7 @@ handle_input() {
         3req) handle_3req ;;
         3upd) handle_3upd ;;
 
-        save) handle_save; exit 0 ;;
+        save) handle_save ;;
         exit) exit 0;;
 
         *) handle_wrong_input $1 ;;
