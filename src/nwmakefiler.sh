@@ -294,7 +294,6 @@ validate_s1() {
 declare -a function_names_s1=()
 declare -a function_names_s2=()
 declare -a function_names_s3=()
-declare -a function_names_all=()
 
 add_to_function_names_s1() {
     function_names_s1+=("$1")
@@ -304,14 +303,6 @@ add_to_function_names_s2() {
 }
 add_to_function_names_s3() {
     function_names_s3+=("$1")
-}
-add_to_function_names_all() {
-    function_names_all+=("$1")
-}
-add_array_to_function_names_all() {
-    local array_name="$1"
-    local -n arr_ref="$array_name"
-    function_names_all+=( "${arr_ref[@]}" )
 }
 eval_function_names() {
     local array_name="$1"
@@ -325,11 +316,16 @@ eval_function_names() {
 
     echo "$content"
 }
-reset_function_names_all() {
-    function_names_all=()
-}
-reset_content() {
-    content=""
+contains_at_least_one_concise() {
+    local array_name="$1"
+    local -n array_ref="$array_name"
+
+    for item in "${array_ref[@]}"; do
+        if [[ "$item" == *concise ]]; then
+            return 0
+        fi
+    done
+    return 1
 }
 
 # MENU
@@ -625,8 +621,14 @@ handle_save() {
 
         content+=$(create_section1_name)
         content+=$'\n'
-        content+=$(create_target_list ".PHONY" function_names_s2)
-        content+=$'\n'
+
+        if contains_at_least_one_concise function_names_s2 && contains_at_least_one_concise function_names_s3; then
+
+            content+=$(create_target_list ".PHONY" function_names_s2)
+            content+=$'\n'
+        
+        fi
+        
         content+=$(create_section1_shell)
         content+=$'\n'
         content+=$(create_section1_root_dir)
@@ -636,21 +638,36 @@ handle_save() {
 
         content+=$(create_section2_name)
         content+=$'\n'
-        content+=$(create_section2_clear)
-        content+=$'\n'
-        content+=$(create_section2_makefile_info)
-        content+=$'\n'        
-        content+=$(eval_function_names function_names_s2)
-        content+=$'\n\n'
+
+        if [[ ${#function_names_s2[@]} -gt 0 ]]; then
+
+            content+=$(create_section2_clear)
+            content+=$'\n'
+            content+=$(create_section2_makefile_info)
+            content+=$'\n'        
+            content+=$(eval_function_names function_names_s2)
+            content+=$'\n\n'
+
+        fi
 
         content+=$(create_section3_name)
         content+=$'\n'
-        content+=$(eval_function_names function_names_s3)
-        content+=$'\n\n'
+
+        if [[ ${#function_names_s3[@]} -gt 0 ]]; then
+
+            content+=$(eval_function_names function_names_s3)
+            content+=$'\n\n'
+
+        fi
 
         content+=$(create_section4_name)
         content+=$'\n'
-        content+=$(create_target_list "all-concise" function_names_s2)
+
+        if contains_at_least_one_concise function_names_s2 && contains_at_least_one_concise function_names_s3; then
+            
+            content+=$(create_target_list "all-concise" function_names_s2)
+
+        fi
 
         script_dir="$(get_current_folder_path)"
         echo "$content" > "$script_dir/makefile"
