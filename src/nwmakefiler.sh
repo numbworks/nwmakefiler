@@ -356,6 +356,7 @@ declare -A options_s3=(
     ["3pyv"]="check-pythonversion"
 	["3req"]="check-requirements"
 	["3upd"]="update-codecoverage"
+    ["3all"]="all the above"
 )
 declare -a log_messages=()
 
@@ -441,9 +442,15 @@ show_menu_options_s2() {
 show_menu_options_s3() {
     echo "SECTION3 (UTILITIES)"
     echo
-    for key in $(printf "%s\n" "${!options_s3[@]}" | sort); do
-        echo "  - [$key] ${options_s3[$key]}"
+
+    options_s3_keys=("3cal" "3cls" "3pyv" "3req" "3upd" "3all")
+    
+    for key in "${options_s3_keys[@]}"; do
+        if [[ -v options_s3[$key] ]]; then
+            echo "  - [$key] ${options_s3[$key]}"
+        fi
     done
+
     echo
 }
 show_menu_log_messages() {
@@ -601,6 +608,15 @@ handle_3upd() {
     unset options_s3["3upd"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_3all() {
+    handle_3cal
+    handle_3cls
+    handle_3pyv
+    handle_3req
+    handle_3upd
+    unset options_s3["3all"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_save() {
 
     if validate_s1 function_names_s1; then
@@ -675,6 +691,7 @@ handle_input() {
         3pyv) handle_3pyv ;;
         3req) handle_3req ;;
         3upd) handle_3upd ;;
+        3all) handle_3all ;;
 
         save) handle_save ;;
         exit) exit 0;;
