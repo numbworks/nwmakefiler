@@ -394,6 +394,9 @@ create_target_list() {
     local target_line="$prefix: ${targets[*]}"
     echo "$target_line"
 }
+get_current_folder_path() {
+    echo "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+}
 show_menu_header() {
     echo "============================="
     echo "         NWMAKEFILER         "
@@ -597,7 +600,8 @@ handle_save() {
         content+=$(create_target_list "all-concise" function_names_s2)
         content+=$'\n'
 
-        echo $content
+        script_dir="$(get_current_folder_path)"
+        echo "$content" > "$script_dir/makefile"
 
         exit 0
 
