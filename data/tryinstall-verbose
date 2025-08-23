@@ -1,0 +1,17 @@
+tryinstall-verbose:
+	@clear; \
+	cd /home; \
+	rm -rf build; \
+	rm -rf dist; \
+	rm -rf $(MODULE_NAME).egg-info; \
+	rm -rf venv; \
+	python /workspaces/$(MODULE_NAME)/src/setup.py bdist_wheel; \
+	python -m venv venv; \
+	source venv/bin/activate; \
+	pip install dist/$(MODULE_NAME)*.whl; \
+	pip show $(MODULE_NAME) | grep Version; \
+	deactivate; \
+	rm -rf build; \
+	rm -rf dist; \
+	rm -rf $(MODULE_NAME).egg-info; \
+	rm -rf venv;

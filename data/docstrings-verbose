@@ -1,0 +1,4 @@
+docstrings-verbose:
+	@clear; \
+	file_path=$(ROOT_DIR)/src/$(MODULE_NAME).py; \
+	python -m nwdocstringchecking -fp $$file_path -e MessageCollection -e init -e str -e repr;

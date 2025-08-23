@@ -1,0 +1,3 @@
+calculate-commitavg:
+	@clear; \
+	python -m nwcommitaverages;

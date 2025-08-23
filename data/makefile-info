@@ -1,0 +1,4 @@
+makefile-info:
+	@echo "MODULE_NAME: $(MODULE_NAME)"; \
+	echo "MODULE_VERSION: $(MODULE_VERSION)"; \
+	echo "COVERAGE_THRESHOLD: $(COVERAGE_THRESHOLD)%"

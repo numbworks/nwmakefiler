@@ -1,0 +1,3 @@
+codemetrics-verbose:
+	@clear; \
+	radon cc -a -s $(ROOT_DIR)/src/$(MODULE_NAME)*.py | grep -e '^[ ]*[CFM].*' | grep -v ' - A';

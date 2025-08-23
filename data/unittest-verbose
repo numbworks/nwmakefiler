@@ -1,0 +1,3 @@
+unittest-verbose:
+	@clear; \
+	python $(ROOT_DIR)/tests/$(MODULE_NAME)tests.py;

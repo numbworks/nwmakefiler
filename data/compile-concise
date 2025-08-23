@@ -1,0 +1,4 @@
+compile-concise:
+	@value=$$(python -m py_compile $(ROOT_DIR)/src/$(MODULE_NAME).py 2>&1); \
+	if [ -z "$${value}" ]; then value=0; else value=1; fi; \
+	if [ $$value -eq 0 ]; then echo "[OK] $@: compiling the library throws no issues."; else echo "[WARNING] $@: compiling the library throws some issues."; fi;

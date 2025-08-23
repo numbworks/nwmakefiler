@@ -1,0 +1,12 @@
+create-classdiagram:
+	@clear; \
+	pyreverse $(ROOT_DIR)/src/$(MODULE_NAME).py -o mmd -d /home/$(MODULE_NAME)/; \
+	md_file="/home/$(MODULE_NAME)/classes.mmd"; \
+	tmp_file="/home/$(MODULE_NAME)/temp.mmd"; \
+	final_file="/home/$(MODULE_NAME)/Diagram-Architecture.md"; \
+	awk '/classDiagram|--\*/ { print }' $$md_file > $$tmp_file; \
+	echo '```mermaid' > $$md_file; \
+	cat $$tmp_file >> $$md_file; \
+	echo '```' >> $$md_file; \
+	rm $$tmp_file; \
+	mv $$md_file $$final_file

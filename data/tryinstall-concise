@@ -1,0 +1,4 @@
+tryinstall-concise:
+	@value=$$(make tryinstall-verbose 2>&1); \
+	last_chars=$$(echo "$$value" | tail -c 100); \
+	if [[ "$$last_chars" == *"Version: $(MODULE_VERSION)"* ]]; then echo "[OK] $@: installation process works."; else echo "[WARNING] $@: installation process fails!"; fi;

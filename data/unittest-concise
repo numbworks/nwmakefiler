@@ -1,0 +1,4 @@
+unittest-concise:
+	@value=$$(python $(ROOT_DIR)/tests/$(MODULE_NAME)tests.py 2>&1 | grep -oP '(?<=Ran )\d+(?= tests)'); \
+	if [ -z "$${value}" ]; then value=0; fi; \
+	if [ $$value -gt 0 ]; then echo "[OK] $@: '$$value' tests found and run."; else echo "[WARNING] $@: '$$value' tests found and run."; fi;
