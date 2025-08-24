@@ -51,9 +51,8 @@ is_connected() {
     curl -s --head --connect-timeout 5 https://www.google.com >/dev/null
 }
 set_running_from() {
-    # If the script is being piped via curl, $0 will be /dev/stdin
-    if [[ "$0" == "/dev/stdin" ]]; then
-        is_running_from="curl"
+    if [[ "${BASH_SOURCE[0]}" == /dev/fd/* || "${BASH_SOURCE[0]}" == /dev/stdin ]]; then
+        is_running_from="remote"
     else
         is_running_from="local"
     fi
