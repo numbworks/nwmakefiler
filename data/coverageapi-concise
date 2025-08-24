@@ -1,0 +1,5 @@
+coverageapi-concise:
+	@cd $(ROOT_DIR)/tests/; \
+	coverage run -m unittest $(MODULE_NAME)apitests.py > /dev/null 2>&1; \
+	value=$$(coverage report --include=$(MODULE_NAME)api.py | grep -oP 'TOTAL\s+\d+\s+\d+\s+\K\d+(?=%)'); \
+	if [ $$value -ge $(COVERAGE_THRESHOLD) ]; then echo "[OK] $@: unit test coverage >= $(COVERAGE_THRESHOLD)%."; else echo "[WARNING] $@: unit test coverage < $(COVERAGE_THRESHOLD)%."; fi;

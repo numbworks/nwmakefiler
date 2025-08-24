@@ -1,0 +1,6 @@
+compilenotebook-concise:
+	@jupyter nbconvert --to script $(ROOT_DIR)/src/$(MODULE_NAME).ipynb --output /home/nbconvert > /dev/null 2>&1; \
+	value=$$(python -m py_compile /home/nbconvert.py 2>&1); \
+	rm /home/nbconvert.py; \
+	if [ -z "$${value}" ]; then value=0; else value=1; fi; \
+	if [ $$value -eq 0 ]; then echo "[OK] $@: compiling the notebook throws no issues."; else echo "[WARNING] $@: compiling the notebook throws some issues."; fi;

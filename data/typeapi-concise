@@ -1,0 +1,4 @@
+typeapi-concise:
+	@value=$$(mypy $(ROOT_DIR)/src/$(MODULE_NAME)api.py --disable-error-code=import-untyped | grep -c "error:"); \
+	value+=$$(mypy $(ROOT_DIR)/tests/$(MODULE_NAME)apitests.py --disable-error-code=import-untyped  --disable-error-code=import-not-found | grep -c "error:"); \
+	if [ $$value -eq 0 ]; then echo "[OK] $@: passed!"; else echo "[WARNING] $@: not passed! '$$value' error(s) found!"; fi;

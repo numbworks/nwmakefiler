@@ -1,0 +1,5 @@
+compilenotebook-verbose:
+	@clear; \
+	jupyter nbconvert --to script $(ROOT_DIR)/src/$(MODULE_NAME).ipynb --output /home/nbconvert; \
+	python -m py_compile /home/nbconvert.py; \
+	rm /home/nbconvert.py;

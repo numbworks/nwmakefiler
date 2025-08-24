@@ -1,0 +1,4 @@
+typeapi-verbose:
+	@clear; \
+	mypy $(ROOT_DIR)/src/$(MODULE_NAME)api.py --check-untyped-defs --disable-error-code=import-untyped; \
+	mypy $(ROOT_DIR)/tests/$(MODULE_NAME)apitests.py --check-untyped-defs --disable-error-code=import-untyped --disable-error-code=import-not-found;

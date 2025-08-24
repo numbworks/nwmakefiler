@@ -1,0 +1,3 @@
+compileapi-verbose:
+	@clear; \
+	python -m py_compile $(ROOT_DIR)/src/$(MODULE_NAME)api.py;

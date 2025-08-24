@@ -1,0 +1,8 @@
+coverageapi-verbose:
+	@clear; \
+	cd $(ROOT_DIR)/tests/; \
+	coverage run -m unittest $(MODULE_NAME)apitests.py > /dev/null 2>&1; \
+	rm -rf htmlcov; \
+	coverage html --include=$(MODULE_NAME)api.py && sed -n '/<table class="index" data-sortable>/,/<\/table>/p' htmlcov/class_index.html | pandoc --from html --to plain; \
+	sleep 3; \
+	rm -rf htmlcov;
