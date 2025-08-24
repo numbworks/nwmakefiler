@@ -111,6 +111,12 @@ create_section2_docstrings_concise() {
 create_section2_docstrings_verbose() {
     create_target "docstrings-verbose"
 }
+create_section2_docstringsapi_concise() {
+    create_target "docstringsapi-concise"
+}
+create_section2_docstringsapi_verbose() {
+    create_target "docstringsapi-verbose"
+}
 create_section2_setup_concise() {
     create_target "setup-concise"
 }
@@ -266,6 +272,7 @@ declare -A options_s2=(
     ["2com"]="compile-concise/verbose"
 	["2cov"]="coverage-concise/verbose"
 	["2doc"]="docstrings-concise/verbose"
+    ["2doa"]="docstringsapi-concise/verbose"
 	["2set"]="setup-concise"
 	["2try"]="tryinstall-concise/verbose"
 	["2typ"]="type-concise/verbose"
@@ -358,7 +365,7 @@ show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
 
-    options_s2_keys=("2cha" "2cod" "2com" "2cov" "2doc" "2set" "2try" "2typ" "2uni" "2all")
+    options_s2_keys=("2cha" "2cod" "2com" "2cov" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
     
     for key in "${options_s2_keys[@]}"; do
         if [[ -v options_s2[$key] ]]; then
@@ -480,6 +487,12 @@ handle_2doc() {
     unset options_s2["2doc"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2doa() {
+    add_to_function_names_s2 "create_section2_docstringsapi_concise"
+    add_to_function_names_s2 "create_section2_docstringsapi_verbose"
+    unset options_s2["2doa"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_2set() {
     add_to_function_names_s2 "create_section2_setup_concise"
     unset options_s2["2set"]
@@ -510,6 +523,7 @@ handle_2all() {
     handle_2com
     handle_2cov
     handle_2doc
+    handle_2doa
     handle_2set
     handle_2try
     handle_2typ
@@ -663,6 +677,7 @@ handle_input() {
         2com) handle_2com ;;
         2cov) handle_2cov ;;
         2doc) handle_2doc ;;
+        2doa) handle_2doa ;;
         2set) handle_2set ;;
         2try) handle_2try ;;
         2typ) handle_2typ ;;
