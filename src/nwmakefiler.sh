@@ -117,6 +117,12 @@ create_section2_coverage_concise() {
 create_section2_coverage_verbose() {
     create_target "coverage-verbose"
 }
+create_section2_coverageapi_concise() {
+    create_target "coverageapi-concise"
+}
+create_section2_coverageapi_verbose() {
+    create_target "coverageapi-verbose"
+}
 create_section2_docstrings_concise() {
     create_target "docstrings-concise"
 }
@@ -285,6 +291,7 @@ declare -A options_s2=(
     ["2coa"]="compileapi-concise/verbose"
     ["2con"]="compilenotebook-concise/verbose"
 	["2cov"]="coverage-concise/verbose"
+    ["2cva"]="coverageapi-concise/verbose"
 	["2doc"]="docstrings-concise/verbose"
     ["2doa"]="docstringsapi-concise/verbose"
 	["2set"]="setup-concise"
@@ -379,7 +386,7 @@ show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
 
-    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
+    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2cva" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
     
     for key in "${options_s2_keys[@]}"; do
         if [[ -v options_s2[$key] ]]; then
@@ -507,6 +514,12 @@ handle_2cov() {
     unset options_s2["2cov"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2cva() {
+    add_to_function_names_s2 "create_section2_coverageapi_concise"
+    add_to_function_names_s2 "create_section2_coverageapi_verbose"
+    unset options_s2["2cva"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_2doc() {
     add_to_function_names_s2 "create_section2_docstrings_concise"
     add_to_function_names_s2 "create_section2_docstrings_verbose"
@@ -550,6 +563,7 @@ handle_2all() {
     handle_2coa
     handle_2con
     handle_2cov
+    handle_2cva
     handle_2doc
     handle_2doa
     handle_2set
@@ -706,6 +720,7 @@ handle_input() {
         2coa) handle_2coa ;;
         2con) handle_2con ;;
         2cov) handle_2cov ;;
+        2cva) handle_2cva ;;
         2doc) handle_2doc ;;
         2doa) handle_2doa ;;
         2set) handle_2set ;;
