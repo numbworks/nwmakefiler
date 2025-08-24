@@ -734,8 +734,12 @@ handle_save() {
     handle_save_for_s3 content
     handle_save_for_s4 content
 
-    script_dir="$(get_current_folder_path)"
-    echo "$content" > "$script_dir/makefile"
+    if [[ "$is_running_from" == "local" ]]; then
+        script_dir="$(get_current_folder_path)"
+        echo "$content" > "$script_dir/makefile"
+    else
+        echo "$content" > "makefile"
+    fi
 
     exit 0
 }
