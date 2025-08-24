@@ -280,7 +280,7 @@ declare -a test_names=(
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
     clear
-    source ./nwmakefiler.sh
+    source "$(dirname "$0")/../src/nwmakefiler.sh"
 
     for test_name in "${test_names[@]}"; do
         eval "$test_name"
