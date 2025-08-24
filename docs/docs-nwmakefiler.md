@@ -9,6 +9,8 @@ Contact: numbworks@gmail.com
 
 ## Introduction
 
+![nwmakefiler_menu](Screenshots/nwmakefiler_menu.png)
+
 `nwmakefiler` is a Bash script that interactively generates a `makefile` for a Python project using a menu interface.
 
 ## Getting Started
