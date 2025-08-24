@@ -150,6 +150,12 @@ create_section2_type_concise() {
 create_section2_type_verbose() {
     create_target "type-verbose"
 }
+create_section2_typeapi_concise() {
+    create_target "typeapi-concise"
+}
+create_section2_typeapi_verbose() {
+    create_target "typeapi-verbose"
+}
 create_section2_unittest_concise() {
     create_target "unittest-concise"
 }
@@ -297,6 +303,7 @@ declare -A options_s2=(
 	["2set"]="setup-concise"
 	["2try"]="tryinstall-concise/verbose"
 	["2typ"]="type-concise/verbose"
+    ["2tya"]="typeapi-concise/verbose"
 	["2uni"]="unittest-concise/verbose"
     ["2all"]="all the above"
 )
@@ -386,7 +393,7 @@ show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
 
-    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2cva" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
+    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2cva" "2doc" "2doa" "2set" "2try" "2typ" "2tya" "2uni" "2all")
     
     for key in "${options_s2_keys[@]}"; do
         if [[ -v options_s2[$key] ]]; then
@@ -549,6 +556,12 @@ handle_2typ() {
     unset options_s2["2typ"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2tya() {
+    add_to_function_names_s2 "create_section2_typeapi_concise"
+    add_to_function_names_s2 "create_section2_typeapi_verbose"
+    unset options_s2["2tya"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_2uni() {
     add_to_function_names_s2 "create_section2_unittest_concise"
     add_to_function_names_s2 "create_section2_unittest_verbose"
@@ -569,6 +582,7 @@ handle_2all() {
     handle_2set
     handle_2try
     handle_2typ
+    handle_2tya
     handle_2uni
     unset options_s2["2all"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
@@ -726,6 +740,7 @@ handle_input() {
         2set) handle_2set ;;
         2try) handle_2try ;;
         2typ) handle_2typ ;;
+        2tya) handle_2tya ;;
         2uni) handle_2uni ;;
         2all) handle_2all ;;
 
