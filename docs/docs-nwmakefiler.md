@@ -20,7 +20,7 @@ This script is intended to be used in two ways:
 1. remotely, via:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/numbworks/nwmakefiler/refs/heads/master/src/nwmakefiler.sh | bash
+bash <(curl -fsSL https://raw.githubusercontent.com/numbworks/nwmakefiler/refs/heads/master/src/nwmakefiler.sh)
 ```
 
 2. locally, via:

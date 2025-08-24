@@ -784,7 +784,7 @@ handle_input() {
 }
 
 # MAIN
-if [[ "${BASH_SOURCE[0]}" == "${0}" || "${BASH_SOURCE[0]}" == *"/dev/fd/"* ]]; then
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 
     if ! is_curl_installed; then
         echo "ERROR: 'curl' is not installed. Please install 'curl' first."
