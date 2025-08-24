@@ -42,6 +42,15 @@ create_target_from_remote() {
         echo "Target '$target_name' not found at remote URL '$remote_file'."
     fi
 }
+create_target() {
+    local target_name="$1"
+
+    if [[ "$is_running_from" == "local" ]]; then
+        create_target_from_local "$target_name"
+    else
+        create_target_from_remote "$target_name"
+    fi
+}
 
 # FUNCTIONS FOR SECTION 1
 create_section1_name() {
@@ -67,10 +76,79 @@ create_section1_coverage_threshold() {
 create_section2_name() {
 	echo "# TARGETS" 
 }
+create_section2_clear() {
+    create_target "clear"
+}
+create_section2_makefile_info() {
+    create_target "makefile-info"
+}
+create_section2_changelog_concise() {
+    create_target "changelog-concise"
+}
+create_section2_codemetrics_concise() {
+    create_target "codemetrics-concise"
+}
+create_section2_codemetrics_verbose() {
+    create_target "codemetrics-verbose"
+}
+create_section2_compile_concise() {
+    create_target "compile-concise"
+}
+create_section2_compile_verbose() {
+    create_target "compile-verbose"
+}
+create_section2_coverage_concise() {
+    create_target "coverage-concise"
+}
+create_section2_coverage_verbose() {
+    create_target "coverage-verbose"
+}
+create_section2_docstrings_concise() {
+    create_target "docstrings-concise"
+}
+create_section2_docstrings_verbose() {
+    create_target "docstrings-verbose"
+}
+create_section2_setup_concise() {
+    create_target "setup-concise"
+}
+create_section2_tryinstall_concise() {
+    create_target "tryinstall-concise"
+}
+create_section2_tryinstall_verbose() {
+    create_target "tryinstall-verbose"
+}
+create_section2_type_concise() {
+    create_target "type-concise"
+}
+create_section2_type_verbose() {
+    create_target "type-verbose"
+}
+create_section2_unittest_concise() {
+    create_target "unittest-concise"
+}
+create_section2_unittest_verbose() {
+    create_target "unittest-verbose"
+}
 
 # FUNCTIONS FOR SECTION 3
 create_section3_name() {
 	echo "# UTILITIES" 
+}
+create_section3_calculate_commitavg() {
+    create_target "calculate-commitavg"
+}
+create_section3_create_classdiagram() {
+    create_target "create-classdiagram"
+}
+create_section3_check_pythonversion() {
+    create_target "check-pythonversion"
+}
+create_section3_check_requirements() {
+    create_target "check-requirements"
+}
+create_section3_update_codecoverage() {
+    create_target "update-codecoverage"
 }
 
 # FUNCTIONS FOR SECTION 4
