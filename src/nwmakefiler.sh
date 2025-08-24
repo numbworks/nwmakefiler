@@ -71,7 +71,7 @@ create_target_from_local() {
 }
 create_target_from_remote() {
     local target_name="$1"
-    local base_url="https://raw.githubusercontent.com/numbworks/nwreadinglist/master/data"
+    local base_url="https://raw.githubusercontent.com/numbworks/nwmakefiler/refs/heads/master/data"
     local remote_file="$base_url/$target_name"
 
     local content
@@ -784,7 +784,7 @@ handle_input() {
 }
 
 # MAIN
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if [[ "${BASH_SOURCE[0]}" == "${0}" || "${BASH_SOURCE[0]}" == *"/dev/fd/"* ]]; then
 
     if ! is_curl_installed; then
         echo "ERROR: 'curl' is not installed. Please install 'curl' first."
