@@ -87,6 +87,11 @@ pip install 'git+https://github.com/numbworks/nwcommitaverages.git@v1.0.0#egg=nw
 pip install 'git+https://github.com/numbworks/nwdocstringchecking.git@v1.0.0#egg=nwdocstringchecking&subdirectory=src'
 ```
 
+The following files must have Unix end-of-lines (`LF`), otherwise Bash will fail executing them:
+
+- `nwmakefiler.sh`
+- `nwmakefilertests.sh`
+
 ## Unit Tests
 
 This script is accompanied by a suite of unit tests that you can run as follows:
