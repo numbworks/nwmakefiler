@@ -99,148 +99,148 @@ create_header_comment() {
 }
 
 # FUNCTIONS FOR SECTION 1
-create_section1_name() {
+create_s1_name() {
 	echo "# SETTINGS" 
 }
-create_section1_shell() {
+create_s1_shell() {
 	echo "SHELL := /bin/bash" 
 }
-create_section1_root_dir() {
+create_s1_root_dir() {
 	echo "ROOT_DIR := \$(shell cd .. && pwd)" 
 }
-create_section1_module_name() { 
+create_s1_module_name() { 
 	echo "MODULE_NAME = \"$1\""; 
 }
-create_section1_module_version() { 
+create_s1_module_version() { 
 	echo "MODULE_VERSION = \"$1\""; 
 }
-create_section1_coverage_threshold() {
+create_s1_coverage_threshold() {
     echo "COVERAGE_THRESHOLD = $1"
 }
 
 # FUNCTIONS FOR SECTION 2
-create_section2_name() {
+create_s2_name() {
 	echo "# TARGETS" 
 }
-create_section2_clear() {
+create_s2_clear() {
     create_target "clear"
 }
-create_section2_makefile_info() {
+create_s2_makefile_info() {
     create_target "makefile-info"
 }
-create_section2_changelog_concise() {
+create_s2_changelog_concise() {
     create_target "changelog-concise"
 }
-create_section2_codemetrics_concise() {
+create_s2_codemetrics_concise() {
     create_target "codemetrics-concise"
 }
-create_section2_codemetrics_verbose() {
+create_s2_codemetrics_verbose() {
     create_target "codemetrics-verbose"
 }
-create_section2_compile_concise() {
+create_s2_compile_concise() {
     create_target "compile-concise"
 }
-create_section2_compile_verbose() {
+create_s2_compile_verbose() {
     create_target "compile-verbose"
 }
-create_section2_compileapi_concise() {
+create_s2_compileapi_concise() {
     create_target "compileapi-concise"
 }
-create_section2_compileapi_verbose() {
+create_s2_compileapi_verbose() {
     create_target "compileapi-verbose"
 }
-create_section2_compilenotebook_concise() {
+create_s2_compilenotebook_concise() {
     create_target "compilenotebook-concise"
 }
-create_section2_compilenotebook_verbose() {
+create_s2_compilenotebook_verbose() {
     create_target "compilenotebook-verbose"
 }
-create_section2_coverage_concise() {
+create_s2_coverage_concise() {
     create_target "coverage-concise"
 }
-create_section2_coverage_verbose() {
+create_s2_coverage_verbose() {
     create_target "coverage-verbose"
 }
-create_section2_coverageapi_concise() {
+create_s2_coverageapi_concise() {
     create_target "coverageapi-concise"
 }
-create_section2_coverageapi_verbose() {
+create_s2_coverageapi_verbose() {
     create_target "coverageapi-verbose"
 }
-create_section2_docstrings_concise() {
+create_s2_docstrings_concise() {
     create_target "docstrings-concise"
 }
-create_section2_docstrings_verbose() {
+create_s2_docstrings_verbose() {
     create_target "docstrings-verbose"
 }
-create_section2_docstringsapi_concise() {
+create_s2_docstringsapi_concise() {
     create_target "docstringsapi-concise"
 }
-create_section2_docstringsapi_verbose() {
+create_s2_docstringsapi_verbose() {
     create_target "docstringsapi-verbose"
 }
-create_section2_setup_concise() {
+create_s2_setup_concise() {
     create_target "setup-concise"
 }
-create_section2_tryinstall_concise() {
+create_s2_tryinstall_concise() {
     create_target "tryinstall-concise"
 }
-create_section2_tryinstall_verbose() {
+create_s2_tryinstall_verbose() {
     create_target "tryinstall-verbose"
 }
-create_section2_type_concise() {
+create_s2_type_concise() {
     create_target "type-concise"
 }
-create_section2_type_verbose() {
+create_s2_type_verbose() {
     create_target "type-verbose"
 }
-create_section2_typeapi_concise() {
+create_s2_typeapi_concise() {
     create_target "typeapi-concise"
 }
-create_section2_typeapi_verbose() {
+create_s2_typeapi_verbose() {
     create_target "typeapi-verbose"
 }
-create_section2_unittest_concise() {
+create_s2_unittest_concise() {
     create_target "unittest-concise"
 }
-create_section2_unittest_verbose() {
+create_s2_unittest_verbose() {
     create_target "unittest-verbose"
 }
-create_section2_unittestapi_concise() {
+create_s2_unittestapi_concise() {
     create_target "unittestapi-concise"
 }
-create_section2_unittestapi_verbose() {
+create_s2_unittestapi_verbose() {
     create_target "unittestapi-verbose"
 }
 
 # FUNCTIONS FOR SECTION 3
-create_section3_name() {
+create_s3_name() {
 	echo "# UTILITIES" 
 }
-create_section3_calculate_commitavg() {
+create_s3_calculate_commitavg() {
     create_target "calculate-commitavg"
 }
-create_section3_create_classdiagram() {
+create_s3_create_classdiagram() {
     create_target "create-classdiagram"
 }
-create_section3_create_classdiagramapi() {
+create_s3_create_classdiagramapi() {
     create_target "create-classdiagramapi"
 }
-create_section3_check_pythonversion() {
+create_s3_check_pythonversion() {
     create_target "check-pythonversion"
 }
-create_section3_check_requirements() {
+create_s3_check_requirements() {
     create_target "check-requirements"
 }
-create_section3_update_codecoverage() {
+create_s3_update_codecoverage() {
     create_target "update-codecoverage"
 }
-create_section3_update_codecoverageapi() {
+create_s3_update_codecoverageapi() {
     create_target "update-codecoverageapi"
 }
 
 # FUNCTIONS FOR SECTION 4
-create_section4_name() {
+create_s4_name() {
 	echo "# AGGREGATES" 
 }
 
@@ -270,9 +270,9 @@ validate_s1() {
     local -n arr=$1
 
     local required=(
-        "create_section1_module_name"
-        "create_section1_module_version"
-        "create_section1_coverage_threshold"
+        "create_s1_module_name"
+        "create_s1_module_version"
+        "create_s1_coverage_threshold"
     )
 
     for item in "${required[@]}"; do
@@ -352,9 +352,9 @@ create_target_list() {
             continue
         fi
 
-        # Strip "create_section2_" or "create_section3_"
-        local target="${fn#create_section2_}"
-        target="${target#create_section3_}"
+        # Strip "create_s2_" or "create_s3_"
+        local target="${fn#create_s2_}"
+        target="${target#create_s3_}"
 
         # Replace underscores with hyphens
         target="${target//_/-}"
@@ -469,7 +469,7 @@ handle_1mn() {
     read -p "ENTER MODULE_NAME: " module_name
     
     if validate_module_name "$module_name"; then
-        add_to_function_names_s1 "create_section1_module_name $module_name"
+        add_to_function_names_s1 "create_s1_module_name $module_name"
         unset options_s1["1mn"]
         add_to_log_messages "${FUNCNAME[0]}: success! MODULE_NAME: '$module_name'."
     else
@@ -480,7 +480,7 @@ handle_1mv() {
     read -p "ENTER MODULE_VERSION: " module_version
 
     if validate_module_version "$module_version"; then
-        add_to_function_names_s1 "create_section1_module_version $module_version"
+        add_to_function_names_s1 "create_s1_module_version $module_version"
         unset options_s1["1mv"]
         add_to_log_messages "${FUNCNAME[0]}: success! MODULE_VERSION: '$module_version'."
     else
@@ -491,7 +491,7 @@ handle_1ct() {
     read -p "ENTER COVERAGE_THRESHOLD: " coverage_threshold
 
     if validate_coverage_threshold "$coverage_threshold"; then           
-        add_to_function_names_s1 "create_section1_coverage_threshold $coverage_threshold"
+        add_to_function_names_s1 "create_s1_coverage_threshold $coverage_threshold"
         unset options_s1["1ct"]
         add_to_log_messages "${FUNCNAME[0]}: success! COVERAGE_THRESHOLD: $coverage_threshold."
     else
@@ -499,90 +499,90 @@ handle_1ct() {
     fi
 }
 handle_2cha() {
-    add_to_function_names_s2 "create_section2_changelog_concise"
+    add_to_function_names_s2 "create_s2_changelog_concise"
     unset options_s2["2cha"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2cod() {
-    add_to_function_names_s2 "create_section2_codemetrics_concise"
-    add_to_function_names_s2 "create_section2_codemetrics_verbose"
+    add_to_function_names_s2 "create_s2_codemetrics_concise"
+    add_to_function_names_s2 "create_s2_codemetrics_verbose"
     unset options_s2["2cod"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2com() {
-    add_to_function_names_s2 "create_section2_compile_concise"
-    add_to_function_names_s2 "create_section2_compile_verbose"
+    add_to_function_names_s2 "create_s2_compile_concise"
+    add_to_function_names_s2 "create_s2_compile_verbose"
     unset options_s2["2com"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2coa() {
-    add_to_function_names_s2 "create_section2_compileapi_concise"
-    add_to_function_names_s2 "create_section2_compileapi_verbose"
+    add_to_function_names_s2 "create_s2_compileapi_concise"
+    add_to_function_names_s2 "create_s2_compileapi_verbose"
     unset options_s2["2coa"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2con() {
-    add_to_function_names_s2 "create_section2_compilenotebook_concise"
-    add_to_function_names_s2 "create_section2_compilenotebook_verbose"
+    add_to_function_names_s2 "create_s2_compilenotebook_concise"
+    add_to_function_names_s2 "create_s2_compilenotebook_verbose"
     unset options_s2["2con"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2cov() {
-    add_to_function_names_s2 "create_section2_coverage_concise"
-    add_to_function_names_s2 "create_section2_coverage_verbose"
+    add_to_function_names_s2 "create_s2_coverage_concise"
+    add_to_function_names_s2 "create_s2_coverage_verbose"
     unset options_s2["2cov"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2cva() {
-    add_to_function_names_s2 "create_section2_coverageapi_concise"
-    add_to_function_names_s2 "create_section2_coverageapi_verbose"
+    add_to_function_names_s2 "create_s2_coverageapi_concise"
+    add_to_function_names_s2 "create_s2_coverageapi_verbose"
     unset options_s2["2cva"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2doc() {
-    add_to_function_names_s2 "create_section2_docstrings_concise"
-    add_to_function_names_s2 "create_section2_docstrings_verbose"
+    add_to_function_names_s2 "create_s2_docstrings_concise"
+    add_to_function_names_s2 "create_s2_docstrings_verbose"
     unset options_s2["2doc"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2doa() {
-    add_to_function_names_s2 "create_section2_docstringsapi_concise"
-    add_to_function_names_s2 "create_section2_docstringsapi_verbose"
+    add_to_function_names_s2 "create_s2_docstringsapi_concise"
+    add_to_function_names_s2 "create_s2_docstringsapi_verbose"
     unset options_s2["2doa"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2set() {
-    add_to_function_names_s2 "create_section2_setup_concise"
+    add_to_function_names_s2 "create_s2_setup_concise"
     unset options_s2["2set"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2try() {
-    add_to_function_names_s2 "create_section2_tryinstall_concise"
-    add_to_function_names_s2 "create_section2_tryinstall_verbose"
+    add_to_function_names_s2 "create_s2_tryinstall_concise"
+    add_to_function_names_s2 "create_s2_tryinstall_verbose"
     unset options_s2["2try"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2typ() {
-    add_to_function_names_s2 "create_section2_type_concise"
-    add_to_function_names_s2 "create_section2_type_verbose"
+    add_to_function_names_s2 "create_s2_type_concise"
+    add_to_function_names_s2 "create_s2_type_verbose"
     unset options_s2["2typ"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2tya() {
-    add_to_function_names_s2 "create_section2_typeapi_concise"
-    add_to_function_names_s2 "create_section2_typeapi_verbose"
+    add_to_function_names_s2 "create_s2_typeapi_concise"
+    add_to_function_names_s2 "create_s2_typeapi_verbose"
     unset options_s2["2tya"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2uni() {
-    add_to_function_names_s2 "create_section2_unittest_concise"
-    add_to_function_names_s2 "create_section2_unittest_verbose"
+    add_to_function_names_s2 "create_s2_unittest_concise"
+    add_to_function_names_s2 "create_s2_unittest_verbose"
     unset options_s2["2uni"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2una() {
-    add_to_function_names_s2 "create_section2_unittestapi_concise"
-    add_to_function_names_s2 "create_section2_unittestapi_verbose"
+    add_to_function_names_s2 "create_s2_unittestapi_concise"
+    add_to_function_names_s2 "create_s2_unittestapi_verbose"
     unset options_s2["2una"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
@@ -607,37 +607,37 @@ handle_2all() {
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3cal() {
-    add_to_function_names_s3 "create_section3_calculate_commitavg"
+    add_to_function_names_s3 "create_s3_calculate_commitavg"
     unset options_s3["3cal"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3cls() {
-    add_to_function_names_s3 "create_section3_create_classdiagram"
+    add_to_function_names_s3 "create_s3_create_classdiagram"
     unset options_s3["3cls"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3cla() {
-    add_to_function_names_s3 "create_section3_create_classdiagramapi"
+    add_to_function_names_s3 "create_s3_create_classdiagramapi"
     unset options_s3["3cla"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3pyv() {
-    add_to_function_names_s3 "create_section3_check_pythonversion"
+    add_to_function_names_s3 "create_s3_check_pythonversion"
     unset options_s3["3pyv"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3req() {
-    add_to_function_names_s3 "create_section3_check_requirements"
+    add_to_function_names_s3 "create_s3_check_requirements"
     unset options_s3["3req"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3upd() {
-    add_to_function_names_s3 "create_section3_update_codecoverage"
+    add_to_function_names_s3 "create_s3_update_codecoverage"
     unset options_s3["3upd"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_3upa() {
-    add_to_function_names_s3 "create_section3_update_codecoverageapi"
+    add_to_function_names_s3 "create_s3_update_codecoverageapi"
     unset options_s3["3upa"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
@@ -659,7 +659,7 @@ handle_save_for_s1() {
     content_ref+=$(create_header_comment)
     content_ref+=$'\n\n'
 
-    content_ref+=$(create_section1_name)
+    content_ref+=$(create_s1_name)
     content_ref+=$'\n'
 
     if contains_at_least_one_concise function_names_s2; then
@@ -669,9 +669,9 @@ handle_save_for_s1() {
 		
     fi
 
-    content_ref+=$(create_section1_shell)
+    content_ref+=$(create_s1_shell)
     content_ref+=$'\n'
-    content_ref+=$(create_section1_root_dir)
+    content_ref+=$(create_s1_root_dir)
     content_ref+=$'\n'
     content_ref+=$(eval_function_names function_names_s1)
     content_ref+=$'\n\n'
@@ -679,14 +679,14 @@ handle_save_for_s1() {
 handle_save_for_s2() {
     local -n content_ref="$1"
 
-    content_ref+=$(create_section2_name)
+    content_ref+=$(create_s2_name)
     content_ref+=$'\n'
 
     if [[ ${#function_names_s2[@]} -gt 0 ]]; then
 	
-        content_ref+=$(create_section2_clear)
+        content_ref+=$(create_s2_clear)
         content_ref+=$'\n'
-        content_ref+=$(create_section2_makefile_info)
+        content_ref+=$(create_s2_makefile_info)
         content_ref+=$'\n'
         content_ref+=$(eval_function_names function_names_s2)
         content_ref+=$'\n\n'
@@ -696,7 +696,7 @@ handle_save_for_s2() {
 handle_save_for_s3() {
     local -n content_ref="$1"
 
-    content_ref+=$(create_section3_name)
+    content_ref+=$(create_s3_name)
     content_ref+=$'\n'
 
     if [[ ${#function_names_s3[@]} -gt 0 ]]; then
@@ -709,7 +709,7 @@ handle_save_for_s3() {
 handle_save_for_s4() {
     local -n content_ref="$1"
 
-    content_ref+=$(create_section4_name)
+    content_ref+=$(create_s4_name)
     content_ref+=$'\n'
 
     if contains_at_least_one_concise function_names_s2; then
