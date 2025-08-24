@@ -17,6 +17,31 @@ set_running_from() {
         is_running_from="local"
     fi
 }
+create_target_from_local() {
+    local target_name="$1"
+    local data_dir="$(dirname "$0")/../data"
+    local target_file="$data_dir/$target_name"
+
+    if [[ -f "$target_file" ]]; then
+        cat "$target_file"
+    else
+        echo "Target '$target_name' not found in '$data_dir'."
+    fi
+}
+create_target_from_remote() {
+    local target_name="$1"
+    local base_url="https://raw.githubusercontent.com/numbworks/nwreadinglist/master/data"
+    local remote_file="$base_url/$target_name"
+
+    local content
+    content=$(curl --silent --fail "$remote_file")
+
+    if [[ $? -eq 0 ]]; then
+        printf "%s\n" "$content"
+    else
+        echo "Target '$target_name' not found at remote URL '$remote_file'."
+    fi
+}
 
 # FUNCTIONS FOR SECTION 1
 create_section1_name() {
@@ -549,7 +574,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         echo "ERROR: 'curl' is not installed. Please install 'curl' first."
         exit 1
     fi
-    
+
     if ! is_connected; then
         echo "ERROR: no internet connection. Please connect to internet first."
         exit 1
