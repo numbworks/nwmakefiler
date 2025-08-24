@@ -1,0 +1,7 @@
+v1.0.0
+- Script:
+	- Feature: added all the current makefile targets.
+	- Feature: added the menu and the "save" functionality.
+	- Feature: added the unit testing logic.
+- Documentation:
+	- Feature: covers all the features available in v1.0.0.
