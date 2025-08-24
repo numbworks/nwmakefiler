@@ -116,6 +116,97 @@ Passed
 
 ...
 ```
+## Appendix - Bash quirks
+
+In this paragraph, I list some non-obvious aspects of Bash that I encountered during the development of this script.
+
+**Indexed (numerical) arrays**:
+
+```sh
+declare options_s1_keys=("1mn" "1mv" "1ct")
+declare -a options_s1_keys=("1mn" "1mv" "1ct")
+```
+
+**Associative (key-value) arrays**:
+
+```sh
+declare -A options_s1=(
+    ["1mn"]="MODULE_NAME"
+    ["1mv"]="MODULE_VERSION"
+    ["1ct"]="COVERAGE_THRESHOLD"
+)
+```
+
+**Remote script execution**:
+
+The following method:
+
+```sh
+set_running_from() {
+    if [[ "${BASH_SOURCE[0]}" == /dev/fd/* || "${BASH_SOURCE[0]}" == /dev/stdin ]]; then
+        is_running_from="remote"
+    else
+        is_running_from="local"
+    fi
+}
+```
+
+is based upon the following piece of logic:
+
+1. remote executions done with this command have `/dev/fd/*` as source:
+
+    ```sh
+    bash <(curl -fsSL https://raw.githubusercontent.com/numbworks/nwmakefiler/refs/heads/master/src/nwmakefiler.sh)
+    ```
+
+2. remote executions done with this command (and whatever other kind of piped execution) have `/dev/stdin` as source:
+
+    ```sh
+    curl -fsSL https://raw.githubusercontent.com/numbworks/nwmakefiler/refs/heads/master/src/nwmakefiler.sh | bash
+    ```
+
+The command in the scenario (2) doesn't work for this script (returns 'local' instead of 'remote'), due of the following costraint:
+
+```sh
+# MAIN
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+...
+```
+
+This costraint is required by `nwmakefilertests.sh` to source `nwmakefiler.sh` without executing the code.
+
+This situation has even an impact on saving the makefile locally when the script is remote executed:
+
+```sh
+handle_save() {
+    ...
+    if [[ "$is_running_from" == "local" ]]; then
+        script_dir="$(get_current_folder_path)"
+        echo "$content" > "$script_dir/makefile"
+    else
+        echo "$content" > "makefile"
+    fi
+    ...
+}
+```
+
+Without this conditional, the remotely executed script would write the file to a non-existant path like `/dev/fd/makefile`, raising an error.
+
+**Why printf over echo?**:
+
+The following method uses `printf` instead of `echo`, because `printf` behaves consistently across all POSIX-compliant shells and it's accurate with newline handling:
+
+```sh
+create_target_from_remote() {
+    ...
+
+    if [[ $? -eq 0 ]]; then
+        printf "%s\n" "$content"
+    else
+        echo "Target '$target_name' not found at remote URL '$remote_file'."
+    fi
+}
+```
 
 ## Appendix - The makefile
 
