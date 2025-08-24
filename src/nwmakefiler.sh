@@ -92,6 +92,11 @@ create_target() {
         create_target_from_remote "$target_name"
     fi
 }
+create_header_comment() {
+    local timestamp
+    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+    echo "# Created with '${script_name} v${script_version}' on '${timestamp}'."
+}
 
 # FUNCTIONS FOR SECTION 1
 create_section1_name() {
@@ -650,6 +655,9 @@ handle_3all() {
 }
 handle_save_for_s1() {
     local -n content_ref="$1"
+
+    content_ref+=$(create_header_comment)
+    content_ref+=$'\n\n'
 
     content_ref+=$(create_section1_name)
     content_ref+=$'\n'
