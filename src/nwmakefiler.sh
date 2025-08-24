@@ -1,10 +1,49 @@
 #!/bin/bash
 
-# SYSTEM FUNCTIONS
+# GLOBAL VARIABLES
 declare script_name="nwmakefiler"
 declare script_version="1.0.0"
 declare is_running_from=""
 
+declare -A options_s1=(
+    ["1mn"]="MODULE_NAME"
+    ["1mv"]="MODULE_VERSION"
+    ["1ct"]="COVERAGE_THRESHOLD"
+)
+declare -A options_s2=(
+    ["2cha"]="changelog-concise"
+    ["2cod"]="codemetrics-concise/verbose"
+    ["2com"]="compile-concise/verbose"
+    ["2coa"]="compileapi-concise/verbose"
+    ["2con"]="compilenotebook-concise/verbose"
+	["2cov"]="coverage-concise/verbose"
+    ["2cva"]="coverageapi-concise/verbose"
+	["2doc"]="docstrings-concise/verbose"
+    ["2doa"]="docstringsapi-concise/verbose"
+	["2set"]="setup-concise"
+	["2try"]="tryinstall-concise/verbose"
+	["2typ"]="type-concise/verbose"
+    ["2tya"]="typeapi-concise/verbose"
+	["2uni"]="unittest-concise/verbose"
+    ["2una"]="unittestapi-concise/verbose"
+    ["2all"]="all the above"
+)
+declare -A options_s3=(
+    ["3cal"]="calculate-commitavg"
+    ["3cls"]="create-classdiagram"
+    ["3cla"]="create-classdiagramapi"
+    ["3pyv"]="check-pythonversion"
+	["3req"]="check-requirements"
+	["3upd"]="update-codecoverage"
+    ["3upa"]="update-codecoverageapi"
+    ["3all"]="all the above"
+)
+
+declare options_s1_keys=("1mn" "1mv" "1ct")
+declare options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2cva" "2doc" "2doa" "2set" "2try" "2typ" "2tya" "2uni" "2una" "2all")
+declare options_s3_keys=("3cal" "3cls" "3cla" "3pyv" "3req" "3upd" "3upa" "3all")
+
+# SYSTEM FUNCTIONS
 is_curl_installed() {
     command -v curl >/dev/null 2>&1
 }
@@ -291,40 +330,7 @@ reset_array() {
 }
 
 # MENU
-declare -A options_s1=(
-    ["1mn"]="MODULE_NAME"
-    ["1mv"]="MODULE_VERSION"
-    ["1ct"]="COVERAGE_THRESHOLD"
-)
-declare -A options_s2=(
-    ["2cha"]="changelog-concise"
-    ["2cod"]="codemetrics-concise/verbose"
-    ["2com"]="compile-concise/verbose"
-    ["2coa"]="compileapi-concise/verbose"
-    ["2con"]="compilenotebook-concise/verbose"
-	["2cov"]="coverage-concise/verbose"
-    ["2cva"]="coverageapi-concise/verbose"
-	["2doc"]="docstrings-concise/verbose"
-    ["2doa"]="docstringsapi-concise/verbose"
-	["2set"]="setup-concise"
-	["2try"]="tryinstall-concise/verbose"
-	["2typ"]="type-concise/verbose"
-    ["2tya"]="typeapi-concise/verbose"
-	["2uni"]="unittest-concise/verbose"
-    ["2una"]="unittestapi-concise/verbose"
-    ["2all"]="all the above"
-)
-declare -A options_s3=(
-    ["3cal"]="calculate-commitavg"
-    ["3cls"]="create-classdiagram"
-    ["3cla"]="create-classdiagramapi"
-    ["3pyv"]="check-pythonversion"
-	["3req"]="check-requirements"
-	["3upd"]="update-codecoverage"
-    ["3upa"]="update-codecoverageapi"
-    ["3all"]="all the above"
-)
-declare -a log_messages=()
+declare log_messages=()
 
 add_to_log_messages() {
     log_messages+=("$1")
@@ -372,7 +378,7 @@ show_array() {
     done
 }
 show_menu_header() {
-    local width=40
+    local width=50
     local title="${script_name} v${script_version}"
     local padding=$(( (width - ${#title}) / 2 ))
     local line=$(printf '=%.0s' $(seq 1 $width))
@@ -384,9 +390,7 @@ show_menu_header() {
 }
 show_menu_options_s1() {
     echo "SECTION1 (SETTINGS)"
-    echo
-
-    options_s1_keys=("1mn" "1mv" "1ct")
+    echo   
     
     for key in "${options_s1_keys[@]}"; do
         if [[ -v options_s1[$key] ]]; then
@@ -400,8 +404,6 @@ show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
 
-    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2cva" "2doc" "2doa" "2set" "2try" "2typ" "2tya" "2uni" "2una" "2all")
-    
     for key in "${options_s2_keys[@]}"; do
         if [[ -v options_s2[$key] ]]; then
             echo "  - [$key] ${options_s2[$key]}"
@@ -413,8 +415,6 @@ show_menu_options_s2() {
 show_menu_options_s3() {
     echo "SECTION3 (UTILITIES)"
     echo
-
-    options_s3_keys=("3cal" "3cls" "3cla" "3pyv" "3req" "3upd" "3upa" "3all")
     
     for key in "${options_s3_keys[@]}"; do
         if [[ -v options_s3[$key] ]]; then
@@ -443,7 +443,7 @@ show_menu_commands() {
     echo
 }
 show_menu_footer() {
-    local width=40
+    local width=50
     local line
     line=$(printf '=%.0s' $(seq 1 $width))
 
