@@ -105,6 +105,12 @@ create_section2_compileapi_concise() {
 create_section2_compileapi_verbose() {
     create_target "compileapi-verbose"
 }
+create_section2_compilenotebook_concise() {
+    create_target "compilenotebook-concise"
+}
+create_section2_compilenotebook_verbose() {
+    create_target "compilenotebook-verbose"
+}
 create_section2_coverage_concise() {
     create_target "coverage-concise"
 }
@@ -277,6 +283,7 @@ declare -A options_s2=(
     ["2cod"]="codemetrics-concise/verbose"
     ["2com"]="compile-concise/verbose"
     ["2coa"]="compileapi-concise/verbose"
+    ["2con"]="compilenotebook-concise/verbose"
 	["2cov"]="coverage-concise/verbose"
 	["2doc"]="docstrings-concise/verbose"
     ["2doa"]="docstringsapi-concise/verbose"
@@ -372,7 +379,7 @@ show_menu_options_s2() {
     echo "SECTION2 (TARGETS)"
     echo
 
-    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2cov" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
+    options_s2_keys=("2cha" "2cod" "2com" "2coa" "2con" "2cov" "2doc" "2doa" "2set" "2try" "2typ" "2uni" "2all")
     
     for key in "${options_s2_keys[@]}"; do
         if [[ -v options_s2[$key] ]]; then
@@ -488,6 +495,12 @@ handle_2coa() {
     unset options_s2["2coa"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_2con() {
+    add_to_function_names_s2 "create_section2_compilenotebook_concise"
+    add_to_function_names_s2 "create_section2_compilenotebook_verbose"
+    unset options_s2["2con"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_2cov() {
     add_to_function_names_s2 "create_section2_coverage_concise"
     add_to_function_names_s2 "create_section2_coverage_verbose"
@@ -535,6 +548,7 @@ handle_2all() {
     handle_2cod
     handle_2com
     handle_2coa
+    handle_2con
     handle_2cov
     handle_2doc
     handle_2doa
@@ -690,6 +704,7 @@ handle_input() {
         2cod) handle_2cod ;;
         2com) handle_2com ;;
         2coa) handle_2coa ;;
+        2con) handle_2con ;;
         2cov) handle_2cov ;;
         2doc) handle_2doc ;;
         2doa) handle_2doa ;;
