@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # SYSTEM FUNCTIONS
+declare script_name="nwmakefiler"
+declare script_version="1.0.0"
 declare is_running_from=""
 
 is_curl_installed() {
@@ -315,9 +317,14 @@ show_array() {
     done
 }
 show_menu_header() {
-    echo "============================="
-    echo "         NWMAKEFILER         "
-    echo "============================="
+    local width=40
+    local title="${script_name} v${script_version}"
+    local padding=$(( (width - ${#title}) / 2 ))
+    local line=$(printf '=%.0s' $(seq 1 $width))
+
+    echo "$line"
+    printf "%*s%s%*s\n" "$padding" "" "$title" "$((width - padding - ${#title}))" ""
+    echo "$line"
     echo
 }
 show_menu_options_s1() {
@@ -381,7 +388,11 @@ show_menu_commands() {
     echo
 }
 show_menu_footer() {
-    echo "============================="
+    local width=40
+    local line
+    line=$(printf '=%.0s' $(seq 1 $width))
+
+    echo "$line"
     echo
     echo
 }
