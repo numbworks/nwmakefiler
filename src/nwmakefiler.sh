@@ -143,6 +143,9 @@ create_section3_calculate_commitavg() {
 create_section3_create_classdiagram() {
     create_target "create-classdiagram"
 }
+create_section3_create_classdiagramapi() {
+    create_target "create-classdiagramapi"
+}
 create_section3_check_pythonversion() {
     create_target "check-pythonversion"
 }
@@ -151,6 +154,9 @@ create_section3_check_requirements() {
 }
 create_section3_update_codecoverage() {
     create_target "update-codecoverage"
+}
+create_section3_update_codecoverageapi() {
+    create_target "update-codecoverageapi"
 }
 
 # FUNCTIONS FOR SECTION 4
@@ -242,6 +248,11 @@ contains_at_least_one_concise() {
     done
     return 1
 }
+reset_array() {
+    local array_name="$1"
+    local -n target_array="$array_name"
+    target_array=()
+}
 
 # MENU
 declare -A options_s1=(
@@ -264,9 +275,11 @@ declare -A options_s2=(
 declare -A options_s3=(
     ["3cal"]="calculate-commitavg"
     ["3cls"]="create-classdiagram"
+    ["3cla"]="create-classdiagramapi"
     ["3pyv"]="check-pythonversion"
 	["3req"]="check-requirements"
 	["3upd"]="update-codecoverage"
+    ["3upa"]="update-codecoverageapi"
     ["3all"]="all the above"
 )
 declare -a log_messages=()
@@ -359,7 +372,7 @@ show_menu_options_s3() {
     echo "SECTION3 (UTILITIES)"
     echo
 
-    options_s3_keys=("3cal" "3cls" "3pyv" "3req" "3upd" "3all")
+    options_s3_keys=("3cal" "3cls" "3cla" "3pyv" "3req" "3upd" "3upa" "3all")
     
     for key in "${options_s3_keys[@]}"; do
         if [[ -v options_s3[$key] ]]; then
@@ -491,6 +504,7 @@ handle_2uni() {
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
 handle_2all() {
+    reset_array "function_names_s2"
     handle_2cha
     handle_2cod
     handle_2com
@@ -513,6 +527,11 @@ handle_3cls() {
     unset options_s3["3cls"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_3cla() {
+    add_to_function_names_s3 "create_section3_create_classdiagramapi"
+    unset options_s3["3cla"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_3pyv() {
     add_to_function_names_s3 "create_section3_check_pythonversion"
     unset options_s3["3pyv"]
@@ -528,12 +547,20 @@ handle_3upd() {
     unset options_s3["3upd"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
+handle_3upa() {
+    add_to_function_names_s3 "create_section3_update_codecoverageapi"
+    unset options_s3["3upa"]
+    add_to_log_messages "${FUNCNAME[0]}: success!"
+}
 handle_3all() {
+    reset_array "function_names_s3"
     handle_3cal
     handle_3cls
+    handle_3cla
     handle_3pyv
     handle_3req
     handle_3upd
+    handle_3upa
     unset options_s3["3all"]
     add_to_log_messages "${FUNCNAME[0]}: success!"
 }
@@ -644,9 +671,11 @@ handle_input() {
 
         3cal) handle_3cal ;;
         3cls) handle_3cls ;;
+        3cla) handle_3cla ;;
         3pyv) handle_3pyv ;;
         3req) handle_3req ;;
         3upd) handle_3upd ;;
+        3upa) handle_3upa ;;
         3all) handle_3all ;;
 
         save) handle_save ;;
